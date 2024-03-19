@@ -47,6 +47,15 @@ ExportedObj/
 *.opendb
 *.VC.db
 
+*.idea
+*.vs
+*.vsconfig
+*.pidb
+*.userprefs
+*.user
+*.suo
+*.dwlt
+
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
@@ -70,3 +79,18 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+
+# Build Results of an ATL Project
+[Dd]ebugPS/
+[Rr]eleasePS/
+dlldata.c
+Assets/save.json
+Assets/save.json.meta
