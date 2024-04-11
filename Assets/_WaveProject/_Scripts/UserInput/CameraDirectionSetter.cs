@@ -15,14 +15,18 @@ namespace WaveProject.UserInput
 
         public event Action ForceUnsubscribe;
 
-        public void Enable()
+        private void Start()
         {
             _moveRoutine = StartCoroutine(MoveToHitPoint());
         }
 
+        public void Enable()
+        {
+        }
+
         public void Disable()
         {
-            StopCoroutine(_moveRoutine);
+            // StopCoroutine(_moveRoutine);
         }
 
         public void CustomUpdate(Vector2 _)
@@ -39,6 +43,11 @@ namespace WaveProject.UserInput
                 currentMousePosition.y,
                 cameraToTargetDistance));
 
+            ChangeMoveTargetPosition(mousePoint);
+        }
+
+        public void ChangeMoveTargetPosition(Vector3 mousePoint)
+        {
             _moveTargetPosition = _moveZone.ClosestPoint(mousePoint);
         }
 

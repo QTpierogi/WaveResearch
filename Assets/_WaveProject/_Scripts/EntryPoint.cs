@@ -17,7 +17,7 @@ namespace WaveProject
 
             var input = this.Get<InputController>();
             ServiceManager.TryAddService(input);
-            input.SetMainSubscriber(_directionSetter);
+            input.SetCameraMover(_directionSetter);
         }
     }
 }

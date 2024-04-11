@@ -9,6 +9,6 @@ namespace WaveProject.UserInput
         
         void Enable();
         void Disable();
-        void CustomUpdate(Vector2 direction);
+        void CustomUpdate(Vector2 delta);
     }
 }
