@@ -34,12 +34,12 @@ namespace WaveProject.UserInput
             _currentSubscriber = subscriber;
             _currentSubscriber.Enable();
 
-            _currentSubscriber.ForceUnsubscribe += ReturnToCameraHandler;
+            _currentSubscriber.ForceUnsubscribed += ReturnToCameraHandler;
         }
 
         private void ReturnToCameraHandler()
         {
-            _currentSubscriber.ForceUnsubscribe -= ReturnToCameraHandler;
+            _currentSubscriber.ForceUnsubscribed -= ReturnToCameraHandler;
             Subscribe(_cameraDirectionSetter);
         }
 

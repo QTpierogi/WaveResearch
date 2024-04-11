@@ -12,11 +12,11 @@ namespace WaveProject.UserInput
 
         private float _totalDeltaDistance;
         
-        public event Action ForceUnsubscribe;
+        public event Action ForceUnsubscribed;
 
-        private void Start() => Deselect();
+        protected void Start() => Deselect();
 
-        private void OnValidate()
+        protected void OnValidate()
         {
             Outline ??= GetComponent<Outline>();
         }
@@ -39,7 +39,7 @@ namespace WaveProject.UserInput
             Outline.enabled = false;
         }
 
-        public void CustomUpdate(Vector2 delta)
+        public virtual void CustomUpdate(Vector2 delta)
         {
             _totalDeltaDistance += delta.x;
             _totalDeltaDistance = Mathf.Clamp(_totalDeltaDistance, 0, 1 / _sensitivity);
@@ -49,8 +49,13 @@ namespace WaveProject.UserInput
 
             if (Input.GetMouseButtonDown(0))
             {
-                ForceUnsubscribe?.Invoke();
+                ForceUnsubscribe();
             }
+        }
+
+        protected void ForceUnsubscribe()
+        {
+            ForceUnsubscribed?.Invoke();
         }
     }
 }

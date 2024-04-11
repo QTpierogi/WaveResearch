@@ -65,6 +65,8 @@ namespace WaveProject.Station
             _result = clampedValue;
         }
 
+        public void ToggleEnabling(bool value) => _isEnable = value;
+
         private IEnumerator AimForResultValue()
         {
             float currentValue = 0;

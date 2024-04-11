@@ -13,7 +13,7 @@ namespace WaveProject.UserInput
         private Vector3? _moveTargetPosition;
         private Coroutine _moveRoutine;
 
-        public event Action ForceUnsubscribe;
+        public event Action ForceUnsubscribed;
 
         private void Start()
         {

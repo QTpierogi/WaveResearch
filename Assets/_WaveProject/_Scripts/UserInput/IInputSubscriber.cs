@@ -5,7 +5,7 @@ namespace WaveProject.UserInput
 {
     public interface IInputSubscriber
     {
-        public event Action ForceUnsubscribe;
+        public event Action ForceUnsubscribed;
         
         void Enable();
         void Disable();
