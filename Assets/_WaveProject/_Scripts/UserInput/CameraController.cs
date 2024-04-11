@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace WaveProject.Input
+namespace WaveProject.UserInput
 {
-    public class InputController : MonoBehaviour
+    public class CameraController : MonoBehaviour
     {
         [Range(0.01f, 0.5f), SerializeField] private float _partOfScreenToSide = .25f;
         [SerializeField] private float _waitTimeBetweenChangeSide = 1f;

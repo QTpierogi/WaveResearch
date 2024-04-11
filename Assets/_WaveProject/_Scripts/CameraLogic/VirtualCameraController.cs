@@ -1,10 +1,9 @@
 ﻿using System;
 using Cinemachine;
 using UnityEngine;
-using UnityEngine.Serialization;
-using WaveProject.Input;
+using WaveProject.UserInput;
 
-namespace WaveProject.Camera
+namespace WaveProject.CameraLogic
 {
     public class VirtualCameraController : MonoBehaviour
     {
@@ -12,11 +11,11 @@ namespace WaveProject.Camera
         [SerializeField] private CinemachineVirtualCamera _leftVc;
         [SerializeField] private CinemachineVirtualCamera _rightVc;
 
-        [SerializeField] private InputController _inputController;
+        [SerializeField] private CameraController _cameraController;
 
         private void Start()
         {
-            _inputController.OnSideChanged += OnSideChanged;
+            _cameraController.OnSideChanged += OnSideChanged;
         }
 
         private void OnSideChanged(ScreenSide newSide)

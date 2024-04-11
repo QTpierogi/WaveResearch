@@ -1,15 +1,16 @@
 using UnityEngine;
-using WaveProject.Input;
+using UnityEngine.Serialization;
+using WaveProject.UserInput;
 
 namespace WaveProject.Services
 {
     public class InputService : MonoBehaviour, IService
     {
-        [SerializeField] private InputController _inputController;
+        [FormerlySerializedAs("_inputController")] [SerializeField] private CameraController _cameraController;
 
         private bool _initialized;
 
-        public InputController Controller => _inputController;
+        public CameraController Controller => _cameraController;
         
         private void Awake()
         {
