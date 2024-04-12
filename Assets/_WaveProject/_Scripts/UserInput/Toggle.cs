@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace WaveProject.UserInput
 {
-    class Toggle : Interactable
+    class Toggle : RotateInteractable
     {
         [SerializeField] private UnityEvent<bool> _toggleSwithched;
         
