@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace WaveProject.Utility
 {
@@ -31,6 +32,11 @@ namespace WaveProject.Utility
             
             var clampedAngle = Mathf.Clamp(eulerAngle, minAngleRange, maxAngleRange);
             return Remap(clampedAngle, minAngleRange, maxAngleRange, to1, to2);
+        }
+
+        public static bool IsAlmostEqual(float firstValue, float secondValue, double deviation)
+        {
+            return Math.Abs(firstValue - secondValue) < deviation;
         }
     }
 }

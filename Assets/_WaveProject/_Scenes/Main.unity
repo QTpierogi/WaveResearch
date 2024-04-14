@@ -191,9 +191,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 86460897}
   _inputAxis: 0
-  _rotateAxis: {x: 1, y: 0, z: 0}
+  _exitAxis: {x: 1, y: 0, z: 0}
   _angleRange: 90
-  _sensitivity: 0.005
 --- !u!135 &86460899
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1535,9 +1534,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 605332418}
   _inputAxis: 0
-  _rotateAxis: {x: 1, y: 0, z: 0}
-  _angleRange: 90
-  _sensitivity: 0.005
+  _exitAxis: {x: 1, y: 0, z: 0}
   _toggleSwithched:
     m_PersistentCalls:
       m_Calls:
@@ -1721,9 +1718,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 791201188}
   _inputAxis: 1
-  _rotateAxis: {x: 0, y: 0, z: 1}
+  _exitAxis: {x: 0, y: 0, z: 1}
   _angleRange: 90
-  _sensitivity: 0.005
 --- !u!114 &791201188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3824,11 +3820,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 1643938448}
-  _fovScaleFactor: 0.5
   _target: {fileID: 617512248}
   _moveZone: {fileID: 1655376679}
-  _moveSpeed: 2
-  _fovChangingSpeed: 50
 --- !u!1 &1844819302
 GameObject:
   m_ObjectHideFlags: 0
@@ -4109,9 +4102,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 2003043859}
   _inputAxis: 0
-  _rotateAxis: {x: 1, y: 0, z: 0}
+  _exitAxis: {x: 1, y: 0, z: 0}
   _angleRange: 90
-  _sensitivity: 0.005
 --- !u!135 &2003043858
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4364,9 +4356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 2016275232}
   _inputAxis: 0
-  _rotateAxis: {x: 1, y: 0, z: 0}
-  _angleRange: 70
-  _sensitivity: 0.005
+  _exitAxis: {x: 1, y: 0, z: 0}
   _closestPoint: {fileID: 177724638}
   _farthestPoint: {fileID: 2042530975}
 --- !u!65 &2016275234
@@ -4470,9 +4460,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 2050951902}
   _inputAxis: 0
-  _rotateAxis: {x: 1, y: 0, z: 0}
+  _exitAxis: {x: 1, y: 0, z: 0}
   _angleRange: 90
-  _sensitivity: 0.005
 --- !u!135 &2050951901
 SphereCollider:
   m_ObjectHideFlags: 0

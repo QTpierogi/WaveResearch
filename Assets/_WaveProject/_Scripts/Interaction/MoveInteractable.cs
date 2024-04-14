@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace WaveProject.UserInput
+namespace WaveProject.Interaction
 {
-    public class MoveInteractable : RotateInteractable
+    public class MoveInteractable : Interactable
     {
         [SerializeField] private Transform _closestPoint;
         [SerializeField] private Transform _farthestPoint;
@@ -14,11 +14,11 @@ namespace WaveProject.UserInput
             var start = _farthestPoint.position;
             var end = _closestPoint.position;
 
-            transform.position = Vector3.Lerp(start, end, TotalDeltaDistance * _sensitivity);
+            transform.position = Vector3.Lerp(start, end, TotalDeltaDistance * Sensitivity);
             
             if (Input.GetMouseButtonDown(0))
             {
-                ForceUnsubscribe();
+                FinishChanging();
             }
         }
     }

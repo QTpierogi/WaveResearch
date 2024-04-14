@@ -1,9 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using WaveProject.Interaction;
 using WaveProject.Services;
 
-namespace WaveProject.UserInput
+namespace WaveProject.UserInput.Legacy
 {
     public class InputController : MonoBehaviour, IService
     {
@@ -93,14 +92,14 @@ namespace WaveProject.UserInput
                 _cameraDirectionSetter.ChangeFov(position);
             }
             
-            _currentSubscriber.ForceUnsubscribed += ReturnToCameraHandler;
+            _currentSubscriber.ChangingFinished += ReturnToCameraHandler;
         }
 
         private void ReturnToCameraHandler()
         {
             _returnedToCamera = true;
             
-            _currentSubscriber.ForceUnsubscribed -= ReturnToCameraHandler;
+            _currentSubscriber.ChangingFinished -= ReturnToCameraHandler;
             Subscribe(_cameraDirectionSetter);
         }
     }

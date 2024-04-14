@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace WaveProject.UserInput
+namespace WaveProject.Interaction
 {
-    class Toggle : RotateInteractable
+    internal class Toggle : Interactable
     {
         [SerializeField] private UnityEvent<bool> _toggleSwithched;
         
@@ -13,7 +13,7 @@ namespace WaveProject.UserInput
         {
             _turnOn = !_turnOn;
             _toggleSwithched?.Invoke(_turnOn);
-            ForceUnsubscribe();
+            FinishChanging();
         }
     }
 }

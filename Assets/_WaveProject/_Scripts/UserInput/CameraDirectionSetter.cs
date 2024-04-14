@@ -2,6 +2,7 @@
 using System.Collections;
 using Cinemachine;
 using UnityEngine;
+using WaveProject.Configs;
 using WaveProject.Utility;
 
 namespace WaveProject.UserInput
@@ -9,32 +10,42 @@ namespace WaveProject.UserInput
     public class CameraDirectionSetter : MonoBehaviour, IInputSubscriber
     {
         [SerializeField] private CinemachineVirtualCamera _camera;
-        [SerializeField] private float _fovScaleFactor = .5f;
-        
+
         [SerializeField] private Transform _target;
         [SerializeField] private Collider _moveZone;
-        [SerializeField] private float _moveSpeed = 1;
-        [SerializeField] private float _fovChangingSpeed = 10;
 
+        private float _moveSpeed;
         private Vector3? _moveTargetPosition;
-        
+
         private float? _defaultFov;
         private float? _fovTarget;
+        private float _fovScaleFactor;
+        private float _fovChangingSpeed;
         private float _defaultDistance;
 
-        public event Action ForceUnsubscribed;
+        public event Action ChangingFinished;
+
+        public Transform Transform => transform;
 
         private void Start()
         {
-            StartCoroutine(MoveToHitPoint());
-            // StartCoroutine(ChangeFovRoutine());
-            
+            LoadData();
+
             _defaultDistance = Vector3.Distance(_camera.transform.position, _target.position);
             _defaultFov = _camera.m_Lens.FieldOfView;
             _fovTarget = _defaultFov.Value;
+
+            StartCoroutine(MoveToHitPoint());
+            StartCoroutine(ChangeFovRoutine());
         }
 
-        public Transform Transform => transform;
+        private void LoadData()
+        {
+            _moveSpeed = InteractionSettings.Data.CameraMoveSpeed;
+
+            _fovScaleFactor = InteractionSettings.Data.FovScaleFactor;
+            _fovChangingSpeed = InteractionSettings.Data.FovChangingSpeed;
+        }
 
         public void Enable()
         {
@@ -44,7 +55,6 @@ namespace WaveProject.UserInput
 
         public void Disable()
         {
-            // StopCoroutine(_moveRoutine);
         }
 
         public void CustomUpdate(Vector2 _)
@@ -54,7 +64,7 @@ namespace WaveProject.UserInput
             var currentMousePosition = Input.mousePosition;
 
             var cameraToTargetDistance =
-                    Vector3.Distance(Camera.main.transform.position, _target.transform.position);
+                Vector3.Distance(Camera.main.transform.position, _target.transform.position);
 
             var mousePoint = Camera.main.ScreenToWorldPoint(new Vector3(
                 currentMousePosition.x,
@@ -83,7 +93,15 @@ namespace WaveProject.UserInput
             while (true)
             {
                 _target.position = Vector3.MoveTowards(_target.position, _moveTargetPosition.Value,
-                    Easings.OutCubic(Time.deltaTime * _moveSpeed));
+                    Easings.OutCirc(Time.deltaTime * _moveSpeed));
+
+                if (Utils.IsAlmostEqual(_target.position.magnitude, _moveTargetPosition.Value.magnitude, .01))
+                {
+                    _target.position = _moveTargetPosition.Value;
+
+                    var currentMoveTarget = _moveTargetPosition.Value;
+                    yield return new WaitWhile(() => currentMoveTarget == _moveTargetPosition.Value);
+                }
 
                 yield return null;
             }
@@ -91,13 +109,20 @@ namespace WaveProject.UserInput
 
         private IEnumerator ChangeFovRoutine()
         {
-            yield return new WaitUntil(() => _fovTarget != null);
-
             while (true)
             {
-                Debug.Log($"Fov target: {_fovTarget.Value}");
-                _camera.m_Lens.FieldOfView = Mathf.MoveTowards(_camera.m_Lens.FieldOfView, _fovTarget.Value,
-                    Easings.OutCubic(Time.deltaTime * _fovChangingSpeed));
+                var newFieldOfView = Mathf.Lerp(_camera.m_Lens.FieldOfView, _fovTarget.Value,
+                    Easings.OutCirc(Time.deltaTime * _fovChangingSpeed));
+
+                _camera.m_Lens.FieldOfView = newFieldOfView;
+
+                if (Utils.IsAlmostEqual(_camera.m_Lens.FieldOfView, _fovTarget.Value, .01))
+                {
+                    _camera.m_Lens.FieldOfView = _fovTarget.Value;
+
+                    var currentFovTarget = _fovTarget.Value;
+                    yield return new WaitWhile(() => currentFovTarget == _fovTarget.Value);
+                }
 
                 yield return null;
             }

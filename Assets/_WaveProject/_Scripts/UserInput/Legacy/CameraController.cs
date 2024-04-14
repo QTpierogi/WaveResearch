@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace WaveProject.UserInput
+namespace WaveProject.UserInput.Legacy
 {
     public class CameraController : MonoBehaviour
     {

@@ -2,6 +2,7 @@ using UnityEngine;
 using WaveProject.Extensions;
 using WaveProject.Services;
 using WaveProject.UserInput;
+using WaveProject.UserInput.Legacy;
 
 namespace WaveProject
 {

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 using WaveProject.UserInput;
+using WaveProject.UserInput.Legacy;
 
 namespace WaveProject.Services
 {

@@ -2,6 +2,7 @@
 using Cinemachine;
 using UnityEngine;
 using WaveProject.UserInput;
+using WaveProject.UserInput.Legacy;
 
 namespace WaveProject.CameraLogic
 {

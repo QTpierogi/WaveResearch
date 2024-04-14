@@ -1,4 +1,4 @@
-﻿namespace WaveProject.UserInput
+﻿namespace WaveProject.UserInput.Legacy
 {
     public enum ScreenSide
     {
