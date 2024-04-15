@@ -34,6 +34,21 @@ namespace WaveProject.Utility
             return Remap(clampedAngle, minAngleRange, maxAngleRange, to1, to2);
         }
 
+        public static float DegreeToRadians(float angleInDegree)
+        {
+            return angleInDegree * Mathf.PI / 180;
+        }
+
+        public static float MHzToHz(float hz)
+        {
+            return hz * Mathf.Pow(10, 6);
+        }
+
+        public static float MillimetersToMeters(float mm)
+        {
+            return mm * 0.001f;
+        }
+
         public static bool IsAlmostEqual(float firstValue, float secondValue, double deviation)
         {
             return Math.Abs(firstValue - secondValue) < deviation;

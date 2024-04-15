@@ -9,6 +9,7 @@ namespace WaveProject.Station
         [SerializeField] private Transform _secondAntenna;
         
         public float Power { get; private set; }
+        public float Frequency { get; private set; }
 
         private void OnValidate()
         {
@@ -23,6 +24,11 @@ namespace WaveProject.Station
         public void SendPower(float power)
         {
             Power = power;
+        }
+
+        public void SendFrequency(float frequency)
+        {
+            Frequency = frequency;
         }
     }
 }

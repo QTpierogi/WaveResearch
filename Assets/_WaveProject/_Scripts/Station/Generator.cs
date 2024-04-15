@@ -53,6 +53,9 @@ namespace WaveProject.Station
 
             _powerHandle.rotation = Utils.GetRotationInRange(_power, 0, _maxPower,
                 -_angleRange, _angleRange, Vector3.right);
+            
+            _receivingAntenna.SendPower(_power * _rndInfelicity * _powerStep);
+            _receivingAntenna.SendFrequency(_frequency);
         }
 
         private void Update()
@@ -65,7 +68,9 @@ namespace WaveProject.Station
 
             _textPower.text = $"{Mathf.Round(_power)}";
             _textFrequency.text = $"{Mathf.Round(_frequency)}";
+            
             _receivingAntenna.SendPower(_power * _rndInfelicity * _powerStep);
+            _receivingAntenna.SendFrequency(_frequency);
         }
     }
 }
