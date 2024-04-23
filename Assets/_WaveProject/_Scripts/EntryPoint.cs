@@ -2,14 +2,13 @@ using UnityEngine;
 using WaveProject.Extensions;
 using WaveProject.Services;
 using WaveProject.UserInput;
-using WaveProject.UserInput.Legacy;
 
 namespace WaveProject
 {
     public class EntryPoint : MonoBehaviour
     {
-        [Header("Main"), SerializeField] private MainConfig _config;
         [SerializeField] private CameraDirectionSetter _directionSetter;
+        [SerializeField] private FovChanger _fovChanger;
 
         private void Awake()
         {
@@ -17,8 +16,10 @@ namespace WaveProject
             ServiceManager.TryAddService(routineService);
 
             var input = this.Get<InputController>();
-            ServiceManager.TryAddService(input);
             input.SetCameraMover(_directionSetter);
+            input.SetFovChanger(_fovChanger);
+            
+            ServiceManager.TryAddService(input);
         }
     }
 }

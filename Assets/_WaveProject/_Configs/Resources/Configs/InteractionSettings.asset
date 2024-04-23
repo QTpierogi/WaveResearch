@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68468edd0a8942d9b3908bafba3fff57, type: 3}
   m_Name: InteractionSettings
   m_EditorClassIdentifier: 
-  <Sensitivity>k__BackingField: 0.005
-  <FovScaleFactor>k__BackingField: 0.5
+  <Sensitivity>k__BackingField: 0.015
+  <FovMinValue>k__BackingField: 20
+  <FovDefaultValue>k__BackingField: 60
   <FovChangingSpeed>k__BackingField: 25
-  <CameraMoveSpeed>k__BackingField: 3
+  <FovSensitivity>k__BackingField: 3
+  <CameraMoveSpeed>k__BackingField: 2

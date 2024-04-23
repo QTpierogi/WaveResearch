@@ -35,6 +35,7 @@ namespace WaveProject.Interaction
         }
 
         public Transform Transform => transform;
+        public virtual bool OneClickInteracting => false;
 
         public virtual void Enable() { }
 

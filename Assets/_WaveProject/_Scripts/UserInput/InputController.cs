@@ -2,22 +2,25 @@
 using WaveProject.Interaction;
 using WaveProject.Services;
 
-namespace WaveProject.UserInput.Legacy
+namespace WaveProject.UserInput
 {
     public class InputController : MonoBehaviour, IService
     {
         private CameraDirectionSetter _cameraDirectionSetter;
+        private FovChanger _fovChanger;
+        
         private IInputSubscriber _currentSubscriber;
-
         private ISelectable _currentPotentialSubscriber;
 
-        private Vector2 CurrentMousePosition => Input.mousePosition;
         private Vector2 _previousMousePosition;
         private bool _returnedToCamera;
+        
+        private Vector2 CurrentMousePosition => Input.mousePosition;
+        private Vector2 Delta => new(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
         private void Update()
         {
-            SendDirection();
+            CustomUpdate();
             SetOutline();
             TrySubscribe();
         }
@@ -28,16 +31,22 @@ namespace WaveProject.UserInput.Legacy
             Subscribe(_cameraDirectionSetter);
         }
 
-        private void SendDirection()
+        public void SetFovChanger(FovChanger fovChanger)
         {
-            var delta = CurrentMousePosition - _previousMousePosition;
-            _currentSubscriber.CustomUpdate(delta);
-            
-            _previousMousePosition = CurrentMousePosition;
+            _fovChanger = fovChanger;
         }
-        
+
+        private void CustomUpdate()
+        {
+            _currentSubscriber.CustomUpdate(Delta);
+            _fovChanger.CustomUpdate();
+        }
+
         private void SetOutline()
         {
+            if (_currentSubscriber is not CameraDirectionSetter)
+                return;
+            
             var ray = Camera.main.ScreenPointToRay(CurrentMousePosition);
 
             if (Physics.Raycast(ray, out var hit))
@@ -65,7 +74,7 @@ namespace WaveProject.UserInput.Legacy
         {
             if (Input.GetMouseButtonDown(0) == false) return;
 
-            // нужно в том случае, когда насильно вышли из подписчика и сразу же подписываемся на него обратно
+            // нужно в том случае, когда насильно вышли из подписчика и сразу же подписывается на него обратно
             if (_returnedToCamera)
             {
                 _returnedToCamera = false;
@@ -77,27 +86,27 @@ namespace WaveProject.UserInput.Legacy
                 Subscribe(subscriber);
             }
         }
-        
+
         private void Subscribe(IInputSubscriber subscriber)
         {
             _currentSubscriber?.Disable();
             _currentSubscriber = subscriber;
             _currentSubscriber.Enable();
 
-            if (_currentSubscriber is not CameraDirectionSetter)
-            {
-                var position = _currentSubscriber.Transform.position;
-                
-                _cameraDirectionSetter.ChangeMoveTargetPosition(position);
-                _cameraDirectionSetter.ChangeFov(position);
-            }
+            // if (_currentSubscriber is not CameraDirectionSetter)
+            // {
+            //     // var position = _currentSubscriber.Transform.position;
+            //     
+            //     // _cameraDirectionSetter.ChangeMoveTargetPosition(position);
+            //     // _cameraDirectionSetter.ChangeFov(position);
+            // }
             
             _currentSubscriber.ChangingFinished += ReturnToCameraHandler;
         }
 
         private void ReturnToCameraHandler()
         {
-            _returnedToCamera = true;
+            _returnedToCamera = _currentSubscriber.OneClickInteracting == false;
             
             _currentSubscriber.ChangingFinished -= ReturnToCameraHandler;
             Subscribe(_cameraDirectionSetter);
