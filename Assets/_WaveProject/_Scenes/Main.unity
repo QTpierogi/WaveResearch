@@ -1997,7 +1997,19 @@ MonoBehaviour:
   _exitAxis: {x: 1, y: 0, z: 0}
   _toggled:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 833257533}
+        m_TargetAssemblyTypeName: WaveProject.Station.Receiver, Assembly-CSharp
+        m_MethodName: ToggleEnabling
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!135 &605332420
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2501,6 +2513,8 @@ MonoBehaviour:
   _arrowAngleRange: 70
   _arrow: {fileID: 1844819303}
   _receivingAntenna: {fileID: 791201186}
+  _plateLenghtInMM: 0
+  _plateThicknessInMM: 0
 --- !u!1 &839160821
 GameObject:
   m_ObjectHideFlags: 0

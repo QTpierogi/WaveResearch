@@ -25,7 +25,11 @@ namespace WaveProject.Station
 
         [SerializeField] private Transform _arrow;
 
-        [Space] [SerializeField] private ReceivingAntenna _receivingAntenna;
+        [Space] 
+        [SerializeField] private ReceivingAntenna _receivingAntenna;
+        
+        [SerializeField] private float _plateLenghtInMM = 30;
+        [SerializeField] private float _plateThicknessInMM = 3;
 
         private float _result;
         private int _turnOn;
@@ -75,142 +79,161 @@ namespace WaveProject.Station
             var distanceFactor = _receivingAntenna.GetAntennasDistanceFactor();
             var angleInDegree = _receivingAntenna.transform.rotation.eulerAngles.z;
             var angleInRadians = Utils.DegreeToRadians(angleInDegree);
-            var angleCosine = Mathf.Abs(Mathf.Cos(angleInRadians));
-            // var angleCosine = Mathf.Abs((Mathf.Cos(angleInRadians) + 1) / 2);
 
             var variantWavelength = GetVariantWavelength(Utils.MHzToHz(frequency));
-            var plateLength = Utils.MillimetersToMeters(23); 
-            var plateThickness = Utils.MillimetersToMeters(3); 
+            var plateLength = Utils.MillimetersToMeters(_plateLenghtInMM);
+            var plateThickness = Utils.MillimetersToMeters(_plateThicknessInMM);
             
-            // var angleCosine = GetReceiverSignalLevel(variantWavelength, plateLength, plateThickness);
+            var angleCosine = GetReceiverSignalLevel(angleInRadians, variantWavelength, plateLength, plateThickness);
             
-            var value = _scaleFactor * distanceFactor * power * angleCosine;
+            var value = _scaleFactor * distanceFactor/* * power*/ * angleCosine;
 
-            var clampedValue = Mathf.Clamp(value, 0, 100);
-            _result = clampedValue;
+            var clampedValue = Math.Clamp(value, 0, 100);
+            _result = (float)clampedValue;
         }
 
-        private float GetReceiverSignalLevel(float variantWavelength, float plateLength, float plateThickness)
+        private double GetIdealPlateLength(double variantWavelength, double plateThickness)
         {
-            var betta = 30; //GetPolarizationCharacteristicInclinationAngle(variantWavelength, plateLength, plateThickness);
-            var r = .7f; //GetEllipticityCoefficient(variantWavelength, plateLength, plateThickness);
+            var l10 = GetWavelength10(variantWavelength);
+            var l01 = GetWavelength01(variantWavelength, plateThickness);
+            return (l10*l01) / 4 * Math.Abs(l10 - l01);
+        }
 
-            return Mathf.Pow(Mathf.Abs(0 - betta) * (1 - r) + r, 2) / 100; // * 100;
+        private double GetReceiverSignalLevel(float angleInRadians, double variantWavelength, double plateLength,
+            double plateThickness)
+        {
+            var betta = GetPolarizationCharacteristicInclinationAngle(variantWavelength, plateLength, plateThickness);
+            var r = GetEllipticityCoefficient(variantWavelength, plateLength, plateThickness);
+
+            var cosOfAngle = Math.Cos(angleInRadians - betta);
+            return Math.Pow(Math.Abs(cosOfAngle) * (1 - r) + r, 2) * 100;
         }
         
-        private float GetEllipticityCoefficient(float variantWavelength, float plateLength, float plateThickness)
+        private double GetEllipticityCoefficient(double variantWavelength, double plateLength, double plateThickness)
         {
-            var a = GetA(variantWavelength, plateThickness);
+            var a = GetA(variantWavelength, plateLength, plateThickness);
             
             var wavelength10 = GetWavelength10(variantWavelength);
             var wavelength01 = GetWavelength01(variantWavelength, plateThickness);
             
             var shift = GetPhaseShift(plateLength, wavelength10, wavelength01);
+            
+            var absSinOfShift = Math.Abs(Math.Sin(shift));
+            var powSinOfShift = Math.Pow(Math.Cos(shift), 2);
 
+            var aPow4 = Math.Pow(a, 4);
 
-            return (2*a * Mathf.Abs(Mathf.Sin(shift))) /
-                   (a*a + 1 + Mathf.Sqrt(Mathf.Pow(a, 4) - 2 * a*a + 1 + 4*a*a * Mathf.Pow(Mathf.Cos(shift), 2)));
+            return (2*a * absSinOfShift) /
+                   (a*a + 1 + Math.Sqrt(aPow4 - 2 * a*a + 1 + 4*a*a * powSinOfShift));
         }
         
-        private float GetPolarizationCharacteristicInclinationAngle(float variantWavelength, float plateLength, float plateThickness)
+        private double GetPolarizationCharacteristicInclinationAngle(double variantWavelength, double plateLength, double plateThickness)
         {
-            var a = GetA(variantWavelength, plateThickness);
+            var a = GetA(variantWavelength, plateLength, plateThickness);
             var wavelength10 = GetWavelength10(variantWavelength);
             var wavelength01 = GetWavelength01(variantWavelength, plateThickness);
             
             var shift = GetPhaseShift(plateLength, wavelength10, wavelength01);
                 
-            return 0.5f * Mathf.Atan((2 * a) / (a*a - 1) * Mathf.Cos(shift));
+            return 0.5d * Math.Atan((2 * a) / (a*a - 1) * Math.Cos(shift));
         }
 
-        private float GetA(float variantWavelength, float plateThickness)
+        private double GetA(double variantWavelength, double plateLength, double plateThickness)
         {
-            var g = GetG(variantWavelength, plateThickness);
+            var g = GetG(variantWavelength, plateLength, plateThickness);
             
-            return Mathf.Sqrt(1 - Mathf.Pow(g, 2));
+            return Math.Sqrt(1 - Math.Pow(g, 2));
         }
 
-        private float GetG(float variantWavelength, float plateThickness)
+        private double GetG(double variantWavelength, double plateLength, double plateThickness)
         {
             var z10 = GetZ10(variantWavelength);
-            var zIn = GetZIn(variantWavelength, plateThickness);
+            var zIn = GetZIn(variantWavelength, plateLength, plateThickness);
 
-            return 
-                z10 - zIn /
-                z10 + zIn;
+            return
+                (z10 - zIn) /
+                (z10 + zIn);
         }
 
-        private float GetZIn(float variantWavelength, float plateThickness)
+        private double GetZIn(double variantWavelength, double plateLength, double plateThickness)
         {
-            const float pi = Mathf.PI;
-            var a = _internalWaveguideWidth;
+            const double pi = Mathf.PI;
 
             var z01 = GetZ01(variantWavelength, plateThickness);
             var z10 = GetZ10(variantWavelength);
 
             var lambda01 = GetWavelength01(variantWavelength, plateThickness);
 
-            var tanArg = 2 * pi * variantWavelength / lambda01;
+            var tanArg = 2 * pi * plateLength / lambda01;
 
             var complex = new Complex(0, 1);
             
             return z01 * 
-                   (z10 + (float)complex.Imaginary * z01 * Mathf.Tan(tanArg)) / 
-                   (z01 + (float)complex.Imaginary * z10 * Mathf.Tan(tanArg));
+                   (z10 + complex.Imaginary * z01 * Math.Tan(tanArg)) / 
+                   (z01 + complex.Imaginary * z10 * Math.Tan(tanArg));
         }
 
-        private float GetZ10(float variantWavelength)
+        private double GetZ10(double variantWavelength)
         {
-            const float pi = Mathf.PI;
+            const double pi = Mathf.PI;
             var a = _internalWaveguideWidth;
+
+            var pow = Math.Pow(variantWavelength / (2 * a), 2);
+            var sqrt = Math.Sqrt(1 - pow);
             
-            return 120 * pi / Mathf.Sqrt(1 - Mathf.Pow(variantWavelength / (2 * a), 2));
+            return 120 * pi / sqrt;
         }
 
-        private float GetZ01(float variantWavelength, float plateThickness)
+        private double GetZ01(double variantWavelength, double plateThickness)
         {
-            const float pi = Mathf.PI;
+            const double pi = Mathf.PI;
             var a = _internalWaveguideWidth;
 
-
-            return 120 * pi / Mathf.Sqrt(1 - Mathf.Pow(variantWavelength / (2 * (a - plateThickness)), 2));
+            var pow = Math.Pow(variantWavelength / (2 * (a - plateThickness)), 2);
+            var sqrt = Math.Sqrt(1 - pow);
+            
+            return 120 * pi / sqrt;
         }
 
-        private float GetWavelength10(float variantWavelength)
-        {
-            var a = _internalWaveguideWidth;
-
-            return variantWavelength / Mathf.Sqrt(1 - Mathf.Pow(variantWavelength / 2 * a, 2));
-        }
-
-        private float GetWavelength01(float variantWavelength, float plateThickness)
+        private double GetWavelength10(double variantWavelength)
         {
             var a = _internalWaveguideWidth;
 
-            return variantWavelength / Mathf.Sqrt(1 - Mathf.Pow(variantWavelength / 2 * (a - plateThickness), 2));
+            var pow = Math.Pow(variantWavelength / (2 * a), 2);
+            var sqrt = Math.Sqrt(1 - pow);
+            return variantWavelength / sqrt;
         }
 
-        private float GetPhaseShift(float plateLength, float wavelength10, float wavelength01)
+        private double GetWavelength01(double variantWavelength, double plateThickness)
         {
-            const float pi = Mathf.PI;
+            var a = _internalWaveguideWidth;
+
+            var pow = Math.Pow(variantWavelength / 2 * (a - plateThickness), 2);
+            var sqrt = Math.Sqrt(1 - pow);
+            return variantWavelength / sqrt;
+        }
+
+        private double GetPhaseShift(double plateLength, double wavelength10, double wavelength01)
+        {
+            const double pi = Mathf.PI;
 
             return 2 * pi / wavelength10 * plateLength - 2 * pi / wavelength01 * plateLength;
         }
 
-        private float GetVariantWavelength(float frequency)
+        private double GetVariantWavelength(double frequency)
         {
             return _speedOfLight / frequency;
         }
 
         private IEnumerator AimForResultValue()
         {
-            float currentValue = 0;
+            double currentValue = 0;
             while (true)
             {
-                currentValue = Mathf.Lerp(currentValue, CurrentTarget, _speedFactor * _speedToTarget * Time.deltaTime);
+                currentValue = Mathf.Lerp((float)currentValue, CurrentTarget, _speedFactor * _speedToTarget * Time.deltaTime);
 
-                _text.text = $"{Mathf.Round(currentValue)}";
-                _arrow.rotation = Utils.GetRotationInRange(currentValue, 0, 100, -_arrowAngleRange, _arrowAngleRange, Vector3.right);
+                _text.text = $"{Math.Round(currentValue)}";
+                _arrow.rotation = Utils.GetRotationInRange((float)currentValue, 0, 100, -_arrowAngleRange, _arrowAngleRange, Vector3.right);
 
                 yield return null;
             }
