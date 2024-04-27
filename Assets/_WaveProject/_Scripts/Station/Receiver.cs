@@ -77,7 +77,7 @@ namespace WaveProject.Station
             var frequency = _receivingAntenna.Frequency;
             
             var distanceFactor = _receivingAntenna.GetAntennasDistanceFactor();
-            var angleInDegree = _receivingAntenna.transform.rotation.eulerAngles.z;
+            var angleInDegree = _receivingAntenna.GetRotation();
             var angleInRadians = Utils.DegreeToRadians(angleInDegree);
 
             var variantWavelength = GetVariantWavelength(Utils.MHzToHz(frequency));
@@ -102,8 +102,8 @@ namespace WaveProject.Station
         private double GetReceiverSignalLevel(float angleInRadians, double variantWavelength, double plateLength,
             double plateThickness)
         {
-            var betta = GetPolarizationCharacteristicInclinationAngle(variantWavelength, plateLength, plateThickness);
-            var r = GetEllipticityCoefficient(variantWavelength, plateLength, plateThickness);
+            var betta = 0;GetPolarizationCharacteristicInclinationAngle(variantWavelength, plateLength, plateThickness);
+            var r = 0;GetEllipticityCoefficient(variantWavelength, plateLength, plateThickness);
 
             var cosOfAngle = Math.Cos(angleInRadians - betta);
             return Math.Pow(Math.Abs(cosOfAngle) * (1 - r) + r, 2) * 100;
@@ -228,7 +228,7 @@ namespace WaveProject.Station
         private IEnumerator AimForResultValue()
         {
             double currentValue = 0;
-            while (false)
+            while (true)
             {
                 currentValue = Mathf.Lerp((float)currentValue, CurrentTarget, _speedFactor * _speedToTarget * Time.deltaTime);
 

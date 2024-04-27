@@ -10,7 +10,7 @@ namespace WaveProject.Interaction
         
         [field: SerializeField] public float AngleRange { get; protected set; } = 90;
 
-        public void SetDefaultValue(float currentValue, float minValue, float maxValue)
+        public virtual void SetDefaultValue(float currentValue, float minValue, float maxValue)
         {
             _minValue = minValue;
             _maxValue = maxValue;

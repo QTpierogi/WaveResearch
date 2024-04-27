@@ -51,7 +51,7 @@ namespace WaveProject.Interaction
             Outline.enabled = false;
         }
         
-        protected void UpdateDeltaDistance(Vector2 delta)
+        protected virtual void UpdateDeltaDistance(Vector2 delta)
         {
             TotalDeltaDistance += InputAxis == InputAxis.Horizontal ? delta.x : delta.y;
             TotalDeltaDistance = Mathf.Clamp(TotalDeltaDistance, 0, MaxTotalDeltaDistance);

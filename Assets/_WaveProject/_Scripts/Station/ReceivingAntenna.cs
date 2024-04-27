@@ -9,7 +9,7 @@ namespace WaveProject.Station
     {
         [SerializeField] private float _baseDistance = 4;
         [SerializeField] private MoveInteractable _secondAntenna;
-        [SerializeField] private RotateInteractable _rotatePart;
+        [SerializeField] private InfiniteRotateInteractable _rotatePart;
         
         public float Power { get; private set; }
         public float Frequency { get; private set; }
@@ -25,18 +25,15 @@ namespace WaveProject.Station
             _secondAntenna.SetDefaultValue();
             
             _rotatePart.Init();
-            _rotatePart.SetDefaultValue(0,0,180);
-
-            var a = Utils.InverseLerp(Vector3.one, Vector3.zero, new Vector3(0.6f,0.6f,0.6f));
-            var b = Utils.InverseLerp(Vector3.zero, Vector3.one, new Vector3(0.6f,0.6f,0.6f));
-            var c = Utils.InverseLerp(Vector3.one, Vector3.zero, new Vector3(0.25f,0.25f,0.25f));
-            var v = Utils.InverseLerp(Vector3.one, Vector3.zero, new Vector3(0.75f,0.75f,0.75f));
+            _rotatePart.SetDefaultRotation();
         }
 
         public float GetAntennasDistanceFactor()
         {
           return 1 * _baseDistance / Vector3.Distance(_secondAntenna.Transform.position, transform.position);
         }
+
+        public float GetRotation() => _rotatePart.GetRotation();
 
         public void SendPower(float power)
         {
