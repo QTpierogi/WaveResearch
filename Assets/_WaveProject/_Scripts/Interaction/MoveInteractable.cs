@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using WaveProject.Utility;
 
 namespace WaveProject.Interaction
 {
@@ -6,6 +7,17 @@ namespace WaveProject.Interaction
     {
         [SerializeField] private Transform _closestPoint;
         [SerializeField] private Transform _farthestPoint;
+
+        public void SetDefaultValue()
+        {
+            var start = _farthestPoint.position;
+            var end = _closestPoint.position;
+            
+            var currentValue = Utils.InverseLerp(start, end, transform.position);
+            
+            var valuePercentage = currentValue;
+            TotalDeltaDistance = valuePercentage / Sensitivity;
+        }
 
         public override void CustomUpdate(Vector2 delta)
         {

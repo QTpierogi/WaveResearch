@@ -273,9 +273,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 86460897}
-  _inputAxis: 0
-  _exitAxis: {x: 1, y: 0, z: 0}
-  _angleRange: 90
+  <InputAxis>k__BackingField: 0
+  <ExitAxis>k__BackingField: {x: 1, y: 0, z: 0}
+  <AngleRange>k__BackingField: 90
 --- !u!135 &86460899
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 111864191}
   - component: {fileID: 111864190}
   m_Layer: 0
-  m_Name: Broadcast antenna_5
+  m_Name: Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -323,13 +323,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 111864188}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.458, z: 0.172}
-  m_LocalScale: {x: 0.14737988, y: 0.29846066, z: 1.4454656}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.45800018, z: 0.17199993}
+  m_LocalScale: {x: 0.14737988, y: 0.2984607, z: 1.4454656}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 35792617}
-  m_Father: {fileID: 839160822}
+  m_Father: {fileID: 2115604803}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &111864190
 MeshRenderer:
@@ -391,7 +391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 177724638}
   m_Layer: 0
-  m_Name: Broadcast antenna_ClosestPoint
+  m_Name: ClosestPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -405,12 +405,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 177724637}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.314}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1.3140001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 839160822}
+  m_Father: {fileID: 1907325635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &218800092
 GameObject:
@@ -1689,7 +1689,7 @@ GameObject:
   - component: {fileID: 519557159}
   - component: {fileID: 519557158}
   m_Layer: 0
-  m_Name: Broadcast antenna_4
+  m_Name: Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1703,13 +1703,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519557156}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.458, z: -2.884}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.45800018, z: -2.884}
   m_LocalScale: {x: 0.14737988, y: 0.29846066, z: 1.4454656}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1289930561}
-  m_Father: {fileID: 839160822}
+  m_Father: {fileID: 1907325635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &519557158
 MeshRenderer:
@@ -1993,8 +1993,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 605332418}
-  _inputAxis: 0
-  _exitAxis: {x: 1, y: 0, z: 0}
+  <InputAxis>k__BackingField: 0
+  <ExitAxis>k__BackingField: {x: 1, y: 0, z: 0}
   _toggled:
     m_PersistentCalls:
       m_Calls:
@@ -2125,12 +2125,11 @@ GameObject:
   - component: {fileID: 791201185}
   - component: {fileID: 791201184}
   - component: {fileID: 791201183}
-  - component: {fileID: 791201186}
   - component: {fileID: 791201188}
   - component: {fileID: 791201187}
-  - component: {fileID: 791201189}
+  - component: {fileID: 791201186}
   m_Layer: 0
-  m_Name: Receiving antenna
+  m_Name: ReceiverBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2200,23 +2199,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1765952435}
-  m_Father: {fileID: 839160822}
+  m_Father: {fileID: 2115604803}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &791201186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 791201181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a1b1c8ca3f4bf29069f01039a3088c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseDistance: 2.87
-  _secondAntenna: {fileID: 2016275231}
---- !u!114 &791201187
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2229,28 +2214,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 791201188}
-  _inputAxis: 1
-  _exitAxis: {x: 0, y: 0, z: 1}
-  _angleRange: 90
---- !u!114 &791201188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 791201181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 2
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
---- !u!65 &791201189
+  <InputAxis>k__BackingField: 1
+  <ExitAxis>k__BackingField: {x: 0, y: 0, z: 1}
+  <AngleRange>k__BackingField: 90
+--- !u!65 &791201187
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2271,6 +2238,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &791201188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791201181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &822070779
 GameObject:
   m_ObjectHideFlags: 0
@@ -2503,16 +2488,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08da0921e853482e8a9872dcd7a65625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scaleFactor: 1
-  _scaleFactorHandle: {fileID: 86460896}
-  _scaleFactorAngleRange: 90
-  _maxScaleFactor: 5
-  _speedToTarget: 2
-  _isEnable: 0
+  _defaultScaleFactor: 1
+  _scaleFactorHandle: {fileID: 86460898}
   _text: {fileID: 363168200}
   _arrowAngleRange: 70
   _arrow: {fileID: 1844819303}
-  _receivingAntenna: {fileID: 791201186}
+  _receivingAntenna: {fileID: 2115604806}
   _plateLenghtInMM: 0
   _plateThicknessInMM: 0
 --- !u!1 &839160821
@@ -2547,12 +2528,8 @@ Transform:
   - {fileID: 523495551}
   - {fileID: 1481093057}
   - {fileID: 833257532}
-  - {fileID: 519557157}
-  - {fileID: 111864189}
-  - {fileID: 2016275231}
-  - {fileID: 177724638}
-  - {fileID: 2042530975}
-  - {fileID: 791201185}
+  - {fileID: 1907325635}
+  - {fileID: 2115604803}
   m_Father: {fileID: 1315254118}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &878450179
@@ -3904,17 +3881,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85317b6a6fe7460c8a0fdbf298999ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _frequency: 8000
-  _frequencyHandle: {fileID: 2050951899}
-  _power: 12.3
-  _maxPower: 100
-  _powerStep: 1.5
-  _powerHandle: {fileID: 2003043856}
-  _infelicityRange: 0.5
-  _angleRange: 90
-  _textPower: {fileID: 497721225}
+  _defaultFrequency: 8000
+  _frequencyHandle: {fileID: 2050951900}
   _textFrequency: {fileID: 1104913449}
-  _receivingAntenna: {fileID: 791201186}
+  _defaultPower: 10
+  _powerHandle: {fileID: 2003043857}
+  _textPower: {fileID: 497721225}
+  _receivingAntenna: {fileID: 2115604806}
 --- !u!1 &1616252200
 GameObject:
   m_ObjectHideFlags: 0
@@ -4870,6 +4843,41 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1903589104}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1907325634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1907325635}
+  m_Layer: 0
+  m_Name: BroadcastAntenna
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1907325635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907325634}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2016275231}
+  - {fileID: 177724638}
+  - {fileID: 2042530975}
+  - {fileID: 519557157}
+  m_Father: {fileID: 839160822}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2003043855
 GameObject:
   m_ObjectHideFlags: 0
@@ -4918,9 +4926,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 2003043859}
-  _inputAxis: 0
-  _exitAxis: {x: 1, y: 0, z: 0}
-  _angleRange: 90
+  <InputAxis>k__BackingField: 0
+  <ExitAxis>k__BackingField: {x: 1, y: 0, z: 0}
+  <AngleRange>k__BackingField: 90
 --- !u!135 &2003043858
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4975,7 +4983,7 @@ GameObject:
   - component: {fileID: 2016275232}
   - component: {fileID: 2016275233}
   m_Layer: 0
-  m_Name: Broadcast antenna
+  m_Name: MovePart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5039,15 +5047,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2016275227}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
+  m_LocalRotation: {x: -0, y: -0, z: 0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: -2.87}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalScale: {x: 0.20000002, y: 0.20000002, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 550388018}
   - {fileID: 1856279766}
   - {fileID: 651451156}
-  m_Father: {fileID: 839160822}
+  m_Father: {fileID: 1907325635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
 --- !u!114 &2016275232
 MonoBehaviour:
@@ -5080,8 +5088,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 2016275232}
-  _inputAxis: 0
-  _exitAxis: {x: 1, y: 0, z: 0}
+  <InputAxis>k__BackingField: 0
+  <ExitAxis>k__BackingField: {x: 1, y: 0, z: 0}
   _closestPoint: {fileID: 177724638}
   _farthestPoint: {fileID: 2042530975}
 --- !u!65 &2016275234
@@ -5115,7 +5123,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2042530975}
   m_Layer: 0
-  m_Name: Broadcast antenna_FarhestPoint
+  m_Name: FarhestPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -5129,12 +5137,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2042530974}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -3.838}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 839160822}
+  m_Father: {fileID: 1907325635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2050951898
 GameObject:
@@ -5184,9 +5192,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Outline>k__BackingField: {fileID: 2050951902}
-  _inputAxis: 0
-  _exitAxis: {x: 1, y: 0, z: 0}
-  _angleRange: 90
+  <InputAxis>k__BackingField: 0
+  <ExitAxis>k__BackingField: {x: 1, y: 0, z: 0}
+  <AngleRange>k__BackingField: 90
 --- !u!135 &2050951901
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5258,6 +5266,55 @@ Transform:
   - {fileID: 363168199}
   m_Father: {fileID: 833257532}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1 &2115604802
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2115604803}
+  - component: {fileID: 2115604806}
+  m_Layer: 0
+  m_Name: ReceivingAntenna
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2115604803
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115604802}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 791201185}
+  - {fileID: 111864189}
+  m_Father: {fileID: 839160822}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2115604806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115604802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8a1b1c8ca3f4bf29069f01039a3088c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseDistance: 2.87
+  _secondAntenna: {fileID: 2016275233}
+  _rotatePart: {fileID: 791201186}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

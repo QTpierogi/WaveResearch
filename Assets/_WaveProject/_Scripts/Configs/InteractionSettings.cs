@@ -16,6 +16,21 @@ namespace WaveProject.Configs
 
         [field:Header("Camera Movement")]
         [field: SerializeField] public float CameraMoveSpeed { get; private set; } = 2;
+        
+        [field:Header("Generator")]
+        [field: SerializeField] public float MaxFrequency { get; private set; } = 10000;
+        [field: SerializeField] public float MaxPower { get; private set; } = 100;
+        [field: Min(0.01f), SerializeField] public float PowerStep { get; private set; } = 1.5f;
+        [field: Min(0.01f), SerializeField] public float FrequencyStep { get; private set; } = 1.5f;
+
+        [field:Header("Receiver")]
+        [field: SerializeField] public float MaxReceiverScaleFactor { get; private set; } = 5;
+        [field: SerializeField] public float ReceiverArrowSpeedToTarget { get; private set; } = 2;
+        
+        
+        [field:Header("Deviation")]
+        [field: Range(0, 1), SerializeField] public float DeviationRange { get; private set; } = 0.05f;
+        
 
         // внутрянняя ширина волновода в метрах
         public const float INTERNAL_WAVEGUIDE_WIDTH = 0.023f; 

@@ -9,6 +9,10 @@ namespace WaveProject.Utility
         {
             return out1 + (val - in1) * (out2 - out1) / (in2 - in1);
         }
+        public static float RoundToIncrement(float  x, float m)
+        {
+            return Mathf.Round(x / m) * m;
+        }
 
         public static Quaternion GetRotationInRange(float currentValue, float in1, float in2, float minAngleRange,
             float maxAngleRange, Vector3 rotationAxis)
@@ -52,6 +56,13 @@ namespace WaveProject.Utility
         public static bool IsAlmostEqual(float firstValue, float secondValue, double deviation)
         {
             return Math.Abs(firstValue - secondValue) < deviation;
+        }
+        
+        public static float InverseLerp(Vector3 a, Vector3 b, Vector3 value)
+        {
+            Vector3 ab = b - a;
+            Vector3 av = value - a;
+            return Vector3.Dot(av, ab) / Vector3.Dot(ab, ab);
         }
     }
 }

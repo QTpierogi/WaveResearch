@@ -1,6 +1,7 @@
-using System;
 using TMPro;
 using UnityEngine;
+using WaveProject.Configs;
+using WaveProject.Interaction;
 using WaveProject.Utility;
 using Random = UnityEngine.Random;
 
@@ -9,68 +10,79 @@ namespace WaveProject.Station
     public class Generator : MonoBehaviour
     {
         [Header("Frequency settings")] 
-        [Range(0, _MAX_FREQUENCY), SerializeField] private float _frequency = 8000f;
-
-        private const float _MAX_FREQUENCY = 10000;
-        [SerializeField] private Transform _frequencyHandle;
-
-        [Header("Power settings")] [Min(0), SerializeField]
-        private float _power = 78;
-
-        [SerializeField] private float _maxPower = 100;
-        [Min(0.01f), SerializeField] private float _powerStep = 1.5f;
-        [SerializeField] private Transform _powerHandle;
-
-        [Min(0), SerializeField] private float _infelicityRange = 0.05f;
-        [SerializeField] private float _angleRange = 70;
-
-        [Space] [SerializeField] private TMP_Text _textPower;
+        [Min(0), SerializeField] private float _defaultFrequency = 8000f;
+        [SerializeField] private RotateInteractable _frequencyHandle;
         [SerializeField] private TMP_Text _textFrequency;
 
-        [Space] [SerializeField] private ReceivingAntenna _receivingAntenna;
+        [Header("Power settings")] 
+        [Min(0), SerializeField] private float _defaultPower = 10;
+        [SerializeField] private RotateInteractable _powerHandle;
+        [SerializeField] private TMP_Text _textPower;
 
-        private float _rndInfelicity;
+        [Space] 
+        [SerializeField] private ReceivingAntenna _receivingAntenna;
+        
+        private float _deviationRange;
+        private float _randomDeviation;
+        
+        private float _maxFrequency;
+        private float _frequencyStep;
+        private float _currentFrequency;
+        
+        private float _maxPower;
+        private float _powerStep;
+        private float _currentPower;
 
         private void OnValidate()
         {
-            if (_frequency > _MAX_FREQUENCY)
+            if (_defaultFrequency > InteractionSettings.Data.MaxFrequency)
             {
-                _frequency = _MAX_FREQUENCY;
+                _defaultFrequency = InteractionSettings.Data.MaxFrequency;
             }
 
-            if (_power > _maxPower)
+            if (_defaultPower > InteractionSettings.Data.MaxPower)
             {
-                _power = _maxPower;
+                _defaultPower = InteractionSettings.Data.MaxPower;
             }
         }
 
         private void Start()
         {
-            _rndInfelicity = Random.Range(1 - _infelicityRange, 1 + _infelicityRange);
-
-            _frequencyHandle.rotation = Utils.GetRotationInRange(_frequency, 0, _MAX_FREQUENCY,
-                -_angleRange, _angleRange, Vector3.right);
-
-            _powerHandle.rotation = Utils.GetRotationInRange(_power, 0, _maxPower,
-                -_angleRange, _angleRange, Vector3.right);
+            LoadData();
             
-            _receivingAntenna.SendPower(_power * _rndInfelicity * _powerStep);
-            _receivingAntenna.SendFrequency(_frequency);
+            _randomDeviation = Random.Range(1 - _deviationRange, 1 + _deviationRange);
+
+            _frequencyHandle.Init();
+            _frequencyHandle.SetDefaultValue(_defaultFrequency, 0, _maxFrequency);
+            
+            _powerHandle.Init();
+            _powerHandle.SetDefaultValue(_defaultPower, 0, _maxPower);
+        }
+
+        private void LoadData()
+        {
+            _maxFrequency = InteractionSettings.Data.MaxFrequency;
+            _maxPower = InteractionSettings.Data.MaxPower;
+            _deviationRange = InteractionSettings.Data.DeviationRange;
+            _frequencyStep = InteractionSettings.Data.FrequencyStep;
+            _powerStep = InteractionSettings.Data.PowerStep;
         }
 
         private void Update()
         {
-            _frequency = Utils.GetValueByRotationInRange(_frequencyHandle.rotation, -_angleRange,
-                _angleRange, 0, _MAX_FREQUENCY, Vector3.right);
+            _currentFrequency = Utils.RoundToIncrement(_frequencyHandle.GetValue(), _frequencyStep);
+            _currentPower = Utils.RoundToIncrement(_powerHandle.GetValue(), _powerStep);
             
-            _power = Utils.GetValueByRotationInRange(_powerHandle.rotation, -_angleRange,
-                _angleRange, 0, _maxPower, Vector3.right);
+            SendData();
+        }
 
-            _textPower.text = $"{Mathf.Round(_power)}";
-            _textFrequency.text = $"{Mathf.Round(_frequency)}";
+        private void SendData()
+        {
+            _textFrequency.text = $"{Mathf.Round(_currentFrequency)}";
+            _textPower.text = $"{Mathf.Round(_currentPower)}";
             
-            _receivingAntenna.SendPower(_power * _rndInfelicity * _powerStep);
-            _receivingAntenna.SendFrequency(_frequency);
+            _receivingAntenna.SendFrequency(_currentFrequency * _randomDeviation);
+            _receivingAntenna.SendPower(_currentPower * _randomDeviation);
         }
     }
 }

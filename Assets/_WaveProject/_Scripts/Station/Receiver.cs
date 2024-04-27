@@ -4,6 +4,7 @@ using System.Numerics;
 using TMPro;
 using UnityEngine;
 using WaveProject.Configs;
+using WaveProject.Interaction;
 using WaveProject.Utility;
 using Vector3 = UnityEngine.Vector3;
 
@@ -11,18 +12,12 @@ namespace WaveProject.Station
 {
     public class Receiver : MonoBehaviour
     {
-        [Min(0), SerializeField] private float _scaleFactor = 1;
-        [SerializeField] private Transform _scaleFactorHandle;
-        [SerializeField] private float _scaleFactorAngleRange = 90;
-        [SerializeField] private float _maxScaleFactor = 5;
-        
-        [SerializeField] private float _speedToTarget = 2;
-        [SerializeField] private bool _isEnable;
+        [Min(0), SerializeField] private float _defaultScaleFactor = 1;
+        [SerializeField] private RotateInteractable _scaleFactorHandle;
 
         [Space] 
         [SerializeField] private TMP_Text _text;
         [SerializeField] private float _arrowAngleRange = 70;
-
         [SerializeField] private Transform _arrow;
 
         [Space] 
@@ -37,14 +32,17 @@ namespace WaveProject.Station
         
         private float _internalWaveguideWidth;
         private float _speedOfLight;
+        private float _maxScaleFactor;
+        private bool _isEnable;
+        private float _speedToTarget;
 
         private float CurrentTarget => _result * _turnOn;
 
         private void OnValidate()
         {
-            if (_scaleFactor > _maxScaleFactor)
+            if (_defaultScaleFactor > InteractionSettings.Data.MaxReceiverScaleFactor)
             {
-                _scaleFactor = _maxScaleFactor;
+                _defaultScaleFactor = InteractionSettings.Data.MaxReceiverScaleFactor;
             }
         }
 
@@ -53,12 +51,15 @@ namespace WaveProject.Station
             LoadData();
             StartCoroutine(AimForResultValue());
             
-            _scaleFactorHandle.rotation = Utils.GetRotationInRange(_scaleFactor, 0, _maxScaleFactor,
-                -_scaleFactorAngleRange, _scaleFactorAngleRange, Vector3.right);
+            _scaleFactorHandle.Init();
+            _scaleFactorHandle.SetDefaultValue(_defaultScaleFactor, 0, _maxScaleFactor);
         }
 
         private void LoadData()
         {
+            _maxScaleFactor = InteractionSettings.Data.MaxReceiverScaleFactor;
+            _speedToTarget = InteractionSettings.Data.ReceiverArrowSpeedToTarget;
+            
             _internalWaveguideWidth = InteractionSettings.INTERNAL_WAVEGUIDE_WIDTH;
             _speedOfLight = InteractionSettings.SPEED_OF_LIGHT;
         }
@@ -70,8 +71,7 @@ namespace WaveProject.Station
             _turnOn = _isEnable ? 1 : 0;
             _speedFactor = _isEnable ? 1 : 2;
             
-            _scaleFactor = Utils.GetValueByRotationInRange(_scaleFactorHandle.rotation, -_scaleFactorAngleRange,
-                _scaleFactorAngleRange, 0, _maxScaleFactor, Vector3.right);
+            _defaultScaleFactor = _scaleFactorHandle.GetValue();
 
             var power = _receivingAntenna.Power;
             var frequency = _receivingAntenna.Frequency;
@@ -86,7 +86,7 @@ namespace WaveProject.Station
             
             var angleCosine = GetReceiverSignalLevel(angleInRadians, variantWavelength, plateLength, plateThickness);
             
-            var value = _scaleFactor * distanceFactor/* * power*/ * angleCosine;
+            var value = _defaultScaleFactor * distanceFactor/* * power*/ * angleCosine;
 
             var clampedValue = Math.Clamp(value, 0, 100);
             _result = (float)clampedValue;
@@ -228,7 +228,7 @@ namespace WaveProject.Station
         private IEnumerator AimForResultValue()
         {
             double currentValue = 0;
-            while (true)
+            while (false)
             {
                 currentValue = Mathf.Lerp((float)currentValue, CurrentTarget, _speedFactor * _speedToTarget * Time.deltaTime);
 
