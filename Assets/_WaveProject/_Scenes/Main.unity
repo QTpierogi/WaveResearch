@@ -917,7 +917,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 42
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -2493,8 +2493,6 @@ MonoBehaviour:
   _arrowAngleRange: 70
   _arrow: {fileID: 1844819303}
   _receivingAntenna: {fileID: 2115604806}
-  _plateLenghtInMM: 0
-  _plateThicknessInMM: 0
 --- !u!1 &839160821
 GameObject:
   m_ObjectHideFlags: 0
@@ -4024,7 +4022,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 42
+    FieldOfView: 60
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000

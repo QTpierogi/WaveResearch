@@ -82,7 +82,7 @@ namespace WaveProject.Station
             _textPower.text = $"{Mathf.Round(_currentPower)}";
             
             _receivingAntenna.SendFrequency(_currentFrequency * _randomDeviation);
-            _receivingAntenna.SendPower(_currentPower * _randomDeviation);
+            _receivingAntenna.SendPowerFactor(_currentPower / (_maxPower * 0.5f) * _randomDeviation);
         }
     }
 }

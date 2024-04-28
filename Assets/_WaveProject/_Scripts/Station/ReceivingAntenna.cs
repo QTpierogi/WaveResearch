@@ -11,7 +11,7 @@ namespace WaveProject.Station
         [SerializeField] private MoveInteractable _secondAntenna;
         [SerializeField] private InfiniteRotateInteractable _rotatePart;
         
-        public float Power { get; private set; }
+        public float PowerFactor { get; private set; }
         public float Frequency { get; private set; }
 
         private void OnValidate()
@@ -35,9 +35,9 @@ namespace WaveProject.Station
 
         public float GetRotation() => _rotatePart.GetRotation();
 
-        public void SendPower(float power)
+        public void SendPowerFactor(float power)
         {
-            Power = power;
+            PowerFactor = power;
         }
 
         public void SendFrequency(float frequency)
