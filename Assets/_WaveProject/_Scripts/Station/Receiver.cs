@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Numerics;
 using TMPro;
 using UnityEngine;
 using WaveProject.Configs;
 using WaveProject.Interaction;
 using WaveProject.Station.Plates;
 using WaveProject.Utility;
-using Vector3 = UnityEngine.Vector3;
 
 namespace WaveProject.Station
 {
@@ -15,6 +13,7 @@ namespace WaveProject.Station
     {
         [Min(0), SerializeField] private float _defaultScaleFactor = 1;
         [SerializeField] private RotateInteractable _scaleFactorHandle;
+        [SerializeField] private Toggle _toggle;
 
         [Space] 
         [SerializeField] private TMP_Text _text;
@@ -53,6 +52,8 @@ namespace WaveProject.Station
             
             _scaleFactorHandle.Init();
             _scaleFactorHandle.SetDefaultValue(_defaultScaleFactor, 0, _maxScaleFactor);
+            
+            _toggle.Init();
             
             _plateLength = Utils.MillimetersToMeters(70);
             _plateThickness = Utils.MillimetersToMeters(3);
