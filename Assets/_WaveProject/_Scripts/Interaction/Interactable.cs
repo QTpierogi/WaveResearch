@@ -9,10 +9,7 @@ namespace WaveProject.Interaction
     public abstract class Interactable : MonoBehaviour, IInputSubscriber, ISelectable
     {
         [field: SerializeField] public Outline Outline { get; private set; }
-
-        [field: SerializeField] public InputAxis InputAxis { get; private set;}
-        [field: SerializeField] public Vector3 ExitAxis { get; private set;} = Vector3.right;
-
+        
         protected float Sensitivity;
         protected float TotalDeltaDistance;
         protected float MaxTotalDeltaDistance => 1 / Sensitivity;
@@ -39,7 +36,7 @@ namespace WaveProject.Interaction
 
         public virtual void Disable() { }
 
-        public virtual void CustomUpdate(Vector2 delta) { }
+        public abstract void CustomUpdate(Vector2 delta);
 
         public virtual void Select()
         {
@@ -53,7 +50,7 @@ namespace WaveProject.Interaction
         
         protected virtual void UpdateDeltaDistance(Vector2 delta)
         {
-            TotalDeltaDistance += InputAxis == InputAxis.Horizontal ? delta.x : delta.y;
+            TotalDeltaDistance += delta.x + delta.y;
             TotalDeltaDistance = Mathf.Clamp(TotalDeltaDistance, 0, MaxTotalDeltaDistance);
         }
 

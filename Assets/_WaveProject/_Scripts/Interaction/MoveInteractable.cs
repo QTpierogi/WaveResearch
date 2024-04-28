@@ -3,7 +3,7 @@ using WaveProject.Utility;
 
 namespace WaveProject.Interaction
 {
-    public class MoveInteractable : Interactable
+    public class MoveInteractable : DirectionInteractable
     {
         [SerializeField] private Transform _closestPoint;
         [SerializeField] private Transform _farthestPoint;

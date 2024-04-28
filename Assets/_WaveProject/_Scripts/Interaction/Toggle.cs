@@ -9,12 +9,19 @@ namespace WaveProject.Interaction
         
         public override bool OneClickInteracting => true;
 
+        public UnityEvent<bool> Toggled => _toggled;
+
         private bool _turnOn;
+
+        public void SetDefaultToggledState(bool value)
+        {
+            _turnOn = value;
+        }
 
         public override void CustomUpdate(Vector2 delta)
         {
             _turnOn = !_turnOn;
-            _toggled?.Invoke(_turnOn);
+            Toggled?.Invoke(_turnOn);
             FinishChanging();
         }
     }

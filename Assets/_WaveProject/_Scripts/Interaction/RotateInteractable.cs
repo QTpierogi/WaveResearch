@@ -3,7 +3,7 @@ using WaveProject.Utility;
 
 namespace WaveProject.Interaction
 {
-    internal class RotateInteractable : Interactable
+    internal class RotateInteractable : DirectionInteractable
     {
         private float _minValue;
         private float _maxValue;

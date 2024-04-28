@@ -32,8 +32,6 @@ namespace WaveProject.Station
         private float _speedToTarget;
         
         private PhaseShiftPlate _phaseShiftPlate;
-        private float _plateLength;
-        private float _plateThickness;
 
         private float CurrentTarget => _result * _turnOn;
 
@@ -55,10 +53,7 @@ namespace WaveProject.Station
             
             _toggle.Init();
             
-            _plateLength = Utils.MillimetersToMeters(70);
-            _plateThickness = Utils.MillimetersToMeters(3);
-
-            _phaseShiftPlate = new DielectricPhaseShiftPlate(_plateLength, _plateThickness, 2.8);
+            _phaseShiftPlate = new EmptyPhaseShiftPlate(0, 0);
         }
 
         private void LoadData()
@@ -68,6 +63,23 @@ namespace WaveProject.Station
         }
 
         public void ToggleEnabling(bool value) => _isEnable = value;
+
+        public void SetPhaseShiftPlate(PlateType type, float plateLength, float plateThickness, float plateResistance)
+        {
+            var plateLengthInMeters = Utils.MillimetersToMeters(plateLength);
+            var plateThicknessInMeters = Utils.MillimetersToMeters(plateThickness);
+            
+            switch (type)
+            {
+                case PlateType.Metal:
+                    _phaseShiftPlate = new MetalPhaseShiftPlate(plateLengthInMeters, plateThicknessInMeters);
+                    break;
+                
+                case PlateType.Dielectric:
+                    _phaseShiftPlate = new DielectricPhaseShiftPlate(plateLengthInMeters, plateThicknessInMeters, plateResistance);
+                    break;
+            }
+        }
 
         private void Update()
         {

@@ -3,7 +3,7 @@ using WaveProject.UserInput;
 
 namespace WaveProject.Interaction
 {
-    class InfiniteRotateInteractable : Interactable
+    class InfiniteRotateInteractable : DirectionInteractable
     {
         public virtual void SetDefaultRotation()
         {
