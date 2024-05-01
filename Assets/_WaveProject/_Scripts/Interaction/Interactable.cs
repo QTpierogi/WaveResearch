@@ -21,7 +21,7 @@ namespace WaveProject.Interaction
             Outline ??= GetComponent<Outline>();
         }
 
-        public void Init()
+        public virtual void Init()
         {
             LoadData();
             Deselect();

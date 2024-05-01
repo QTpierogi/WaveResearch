@@ -71,6 +71,10 @@ namespace WaveProject.Station
             
             switch (type)
             {
+                case PlateType.None:
+                    _phaseShiftPlate = new EmptyPhaseShiftPlate(plateLengthInMeters, plateThicknessInMeters);
+                    break;
+                
                 case PlateType.Metal:
                     _phaseShiftPlate = new MetalPhaseShiftPlate(plateLengthInMeters, plateThicknessInMeters);
                     break;

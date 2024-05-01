@@ -1,7 +1,6 @@
 ﻿using System;
-using WaveProject.Station.Plates;
 
-namespace WaveProject.Station
+namespace WaveProject.Station.Plates
 {
     internal class EmptyPhaseShiftPlate : PhaseShiftPlate
     {
@@ -11,7 +10,7 @@ namespace WaveProject.Station
 
         public override double GetReceiverSignalLevel(float angleInRadians, double variantWavelength)
         {
-            const float betta = 0f;
+            const float betta = 90f;
             const float r = 0f;
 
             var cosOfAngle = Math.Cos(angleInRadians - betta);

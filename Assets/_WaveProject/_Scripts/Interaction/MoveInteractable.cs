@@ -5,13 +5,13 @@ namespace WaveProject.Interaction
 {
     public class MoveInteractable : DirectionInteractable
     {
-        [SerializeField] private Transform _closestPoint;
-        [SerializeField] private Transform _farthestPoint;
+        [SerializeField] protected Transform _leftPoint;
+        [SerializeField] protected Transform _rightPoint;
 
         public void SetDefaultValue()
         {
-            var start = _farthestPoint.position;
-            var end = _closestPoint.position;
+            var start = _leftPoint.position;
+            var end = _rightPoint.position;
             
             var currentValue = Utils.InverseLerp(start, end, transform.position);
             
@@ -22,16 +22,22 @@ namespace WaveProject.Interaction
         public override void CustomUpdate(Vector2 delta)
         {
             UpdateDeltaDistance(delta);
-
-            var start = _farthestPoint.position;
-            var end = _closestPoint.position;
-
-            transform.position = Vector3.Lerp(start, end, TotalDeltaDistance * Sensitivity);
+            
+            var time = TotalDeltaDistance * Sensitivity;
+            SetPosition(time);
             
             if (Input.GetMouseButtonDown(0))
             {
                 FinishChanging();
             }
+        }
+
+        protected virtual void SetPosition(float time)
+        {
+            var start = _leftPoint.position;
+            var end = _rightPoint.position;
+            
+            transform.position = Vector3.Lerp(start, end, time);
         }
     }
 }
