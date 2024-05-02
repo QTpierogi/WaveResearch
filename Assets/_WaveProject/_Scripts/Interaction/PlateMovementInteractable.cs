@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using WaveProject.Station.Plates;
+using WaveProject.Utility;
 
 namespace WaveProject.Interaction
 {
@@ -35,18 +36,30 @@ namespace WaveProject.Interaction
             
             if (Physics.Raycast(ray, out var hit, 100, _moveZoneMask))
             {
-                Debug.Log("Raycast");
                 position = _dragZone.bounds.ClosestPoint(hit.point);
+                DebugExtension.DebugPoint(position, Color.green);
             }
             else
             {
-                Debug.Log("mousePoint");
-
                 var mousePoint = _camera.ScreenToWorldPoint(mousePosition);
-                position = _dragZone.bounds.ClosestPoint(mousePoint);
+                DebugExtension.DebugPoint(mousePoint, Color.red);
+                
+                position = _dragZone.ClosestPoint(mousePoint);
+                DebugExtension.DebugPoint(position, Color.green);
             }
+
+            var distance = Vector3.Distance(position, _target.position);
+            var maxDistance = .75f;
             
-            _plate.Rigidbody.position = position;
+            if (distance < maxDistance)
+            {
+                _plate.Rigidbody.position = Vector3.Lerp(_target.position, position, distance / maxDistance);
+            }
+            else
+            {
+                _plate.Rigidbody.position = position;
+            }
+
             
             if (Input.GetMouseButtonDown(0))
             {
