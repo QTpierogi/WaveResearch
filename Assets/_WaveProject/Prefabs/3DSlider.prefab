@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6477433358848393740}
   - component: {fileID: 4786341885492346543}
   - component: {fileID: 647561020793816736}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MovePart
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}

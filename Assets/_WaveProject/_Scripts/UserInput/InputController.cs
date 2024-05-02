@@ -18,6 +18,8 @@ namespace WaveProject.UserInput
         private Vector2 CurrentMousePosition => Input.mousePosition;
         private Vector2 Delta => new(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
+        private const float _RAYCAST_DISTANCE = 1000;
+
         private void Update()
         {
             CustomUpdate();
@@ -49,9 +51,9 @@ namespace WaveProject.UserInput
             
             var ray = Camera.main.ScreenPointToRay(CurrentMousePosition);
 
-            if (Physics.Raycast(ray, out var hit))
+            if (Physics.Raycast(ray, out var hit, _RAYCAST_DISTANCE,IInputSubscriber.LayerMask))
             {
-                if (hit.transform.gameObject.TryGetComponent(out ISelectable selectable))
+                if (hit.collider.TryGetComponent(out ISelectable selectable))
                 {
                     _currentPotentialSubscriber?.Deselect();
                     _currentPotentialSubscriber = selectable;

@@ -15,10 +15,16 @@ namespace WaveProject.Interaction
         protected float MaxTotalDeltaDistance => 1 / Sensitivity;
         
         public event Action ChangingFinished;
-
+        
         protected void OnValidate()
         {
             Outline ??= GetComponent<Outline>();
+            
+            var newLayer = LayerMask.NameToLayer(IInputSubscriber.LAYER);
+            if (gameObject.layer != newLayer)
+            {
+                gameObject.layer = newLayer;
+            }
         }
 
         public virtual void Init()

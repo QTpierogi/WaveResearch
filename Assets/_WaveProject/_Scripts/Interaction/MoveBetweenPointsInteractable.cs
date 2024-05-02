@@ -3,7 +3,7 @@ using WaveProject.Utility;
 
 namespace WaveProject.Interaction
 {
-    public class MoveInteractable : DirectionInteractable
+    public class MoveBetweenPointsInteractable : DirectionInteractable
     {
         [SerializeField] protected Transform _leftPoint;
         [SerializeField] protected Transform _rightPoint;

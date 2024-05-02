@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace WaveProject.Interaction
 {
-    public class Slider3D : MoveInteractable 
+    public class Slider3D : MoveBetweenPointsInteractable 
     {
         [field: SerializeField] public UnityEvent<float> OnValueChanged { get; protected set; } = new();
 

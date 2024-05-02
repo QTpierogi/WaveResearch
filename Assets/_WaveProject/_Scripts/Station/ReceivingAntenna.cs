@@ -8,7 +8,7 @@ namespace WaveProject.Station
     public class ReceivingAntenna : MonoBehaviour
     {
         [SerializeField] private float _baseDistance = 4;
-        [SerializeField] private MoveInteractable _secondAntenna;
+        [SerializeField] private MoveBetweenPointsInteractable _secondAntenna;
         [SerializeField] private InfiniteRotateInteractable _rotatePart;
         
         public float PowerFactor { get; private set; }

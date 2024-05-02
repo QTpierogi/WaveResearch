@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 3319177197441700927}
   - component: {fileID: 2134830825765073645}
   - component: {fileID: 8019174086217323170}
-  m_Layer: 0
+  - component: {fileID: 8987233749935017463}
+  - component: {fileID: 9029794938540865693}
+  m_Layer: 6
   m_Name: PlateModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,6 +107,43 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8987233749935017463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3988502617689616201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &9029794938540865693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3988502617689616201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f1964cba514cfcaf540ec7273f59df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Outline>k__BackingField: {fileID: 8987233749935017463}
+  _target: {fileID: 0}
+  _plate: {fileID: 321532401361033785}
+  _dragZone: {fileID: 0}
+  _moveZoneMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &8039980025225487189
 GameObject:
   m_ObjectHideFlags: 0

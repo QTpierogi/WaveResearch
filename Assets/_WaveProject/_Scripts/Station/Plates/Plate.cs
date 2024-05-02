@@ -6,7 +6,8 @@ namespace WaveProject.Station.Plates
     public class Plate : MonoBehaviour
     {
         [SerializeField] private Rigidbody _rigidbody;
-        
+        public Rigidbody Rigidbody => _rigidbody;
+
         public void SetKinematic(bool value) => _rigidbody.isKinematic = value;
 
         public void SetSize(float length, float thickness)
