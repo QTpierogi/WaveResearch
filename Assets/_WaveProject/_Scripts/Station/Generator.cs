@@ -17,7 +17,6 @@ namespace WaveProject.Station
         [Header("Power settings")] 
         [Min(0), SerializeField] private float _defaultPower = 10;
         [SerializeField] private RotateInteractable _powerHandle;
-        [SerializeField] private TMP_Text _textPower;
 
         [Space] 
         [SerializeField] private ReceivingAntenna _receivingAntenna;
@@ -79,7 +78,6 @@ namespace WaveProject.Station
         private void SendData()
         {
             _textFrequency.text = $"{Mathf.Round(_currentFrequency)}";
-            _textPower.text = $"{Mathf.Round(_currentPower)}";
             
             _receivingAntenna.SendFrequency(_currentFrequency * _randomDeviation);
             _receivingAntenna.SendPowerFactor(_currentPower / (_maxPower * 0.5f) * _randomDeviation);
