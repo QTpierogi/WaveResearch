@@ -28,7 +28,7 @@ namespace WaveProject.Interaction
 
             Transform.rotation = Quaternion.Euler(ExitAxis * TotalDeltaDistance);
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 FinishChanging();
             }

@@ -24,6 +24,7 @@ namespace WaveProject.Station
         private float _deviationRange;
         private float _randomDeviation;
         
+        private float _minFrequency;
         private float _maxFrequency;
         private float _frequencyStep;
         private float _currentFrequency;
@@ -34,9 +35,9 @@ namespace WaveProject.Station
 
         private void OnValidate()
         {
-            if (_defaultFrequency > InteractionSettings.Data.MaxFrequency)
+            if (_defaultFrequency > InteractionSettings.MAX_FREQUENCY)
             {
-                _defaultFrequency = InteractionSettings.Data.MaxFrequency;
+                _defaultFrequency = InteractionSettings.MAX_FREQUENCY;
             }
 
             if (_defaultPower > InteractionSettings.Data.MaxPower)
@@ -52,7 +53,7 @@ namespace WaveProject.Station
             _randomDeviation = Random.Range(1 - _deviationRange, 1 + _deviationRange);
 
             _frequencyHandle.Init();
-            _frequencyHandle.SetDefaultValue(_defaultFrequency, 0, _maxFrequency);
+            _frequencyHandle.SetDefaultValue(_defaultFrequency, _minFrequency, _maxFrequency);
             
             _powerHandle.Init();
             _powerHandle.SetDefaultValue(_defaultPower, 0, _maxPower);
@@ -60,7 +61,9 @@ namespace WaveProject.Station
 
         private void LoadData()
         {
-            _maxFrequency = InteractionSettings.Data.MaxFrequency;
+            _maxFrequency = InteractionSettings.MAX_FREQUENCY;
+            _minFrequency = InteractionSettings.MIH_FREQUENCY;
+            
             _maxPower = InteractionSettings.Data.MaxPower;
             _deviationRange = InteractionSettings.Data.DeviationRange;
             _frequencyStep = InteractionSettings.Data.FrequencyStep;

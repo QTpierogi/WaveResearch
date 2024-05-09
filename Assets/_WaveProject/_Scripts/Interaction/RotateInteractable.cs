@@ -19,7 +19,9 @@ namespace WaveProject.Interaction
                     -AngleRange, AngleRange, ExitAxis);
 
             var value = GetValue();
-            TotalDeltaDistance = value / _maxValue / Sensitivity;
+            var percentage = Utils.Remap(value, _minValue, _maxValue, 0, 1);
+            
+            TotalDeltaDistance = percentage / Sensitivity;
         }
 
         public float GetValue()
@@ -35,7 +37,7 @@ namespace WaveProject.Interaction
             Transform.rotation = Utils.GetRotationInRange(TotalDeltaDistance * Sensitivity, 0, 1,
                 -AngleRange, AngleRange, ExitAxis);
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 FinishChanging();
             }

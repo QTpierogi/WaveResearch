@@ -18,7 +18,6 @@ namespace WaveProject.Configs
         [field: SerializeField] public float CameraMoveSpeed { get; private set; } = 2;
         
         [field:Header("Generator")]
-        [field: SerializeField] public float MaxFrequency { get; private set; } = 10000;
         [field: SerializeField] public float MaxPower { get; private set; } = 100;
         [field: Min(0.01f), SerializeField] public float PowerStep { get; private set; } = 1.5f;
         [field: Min(0.01f), SerializeField] public float FrequencyStep { get; private set; } = 1.5f;
@@ -37,6 +36,10 @@ namespace WaveProject.Configs
 
         // скорость света в метрах == 3 * 10^8
         public const float SPEED_OF_LIGHT = 3 * 100000000F; 
+        
+        public const float MIH_FREQUENCY = 7500;
+        public const float MAX_FREQUENCY = 10500;
+
         
         private static InteractionSettings _instance;
 

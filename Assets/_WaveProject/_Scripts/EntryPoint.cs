@@ -16,6 +16,7 @@ namespace WaveProject
             ServiceManager.TryAddService(routineService);
 
             var input = this.Get<InputController>();
+            input.SetCamera(Camera.main);
             input.SetCameraMover(_directionSetter);
             input.SetFovChanger(_fovChanger);
             

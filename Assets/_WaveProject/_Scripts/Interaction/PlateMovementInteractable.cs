@@ -61,7 +61,7 @@ namespace WaveProject.Interaction
             }
 
             
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 _plate.SetKinematic(false);
                 FinishChanging();

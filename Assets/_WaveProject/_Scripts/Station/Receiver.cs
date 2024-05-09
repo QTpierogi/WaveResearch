@@ -52,6 +52,7 @@ namespace WaveProject.Station
             _scaleFactorHandle.SetDefaultValue(_defaultScaleFactor, 0, _maxScaleFactor);
             
             _toggle.Init();
+            _toggle.SetDefaultToggledState(false);
             
             _phaseShiftPlate = new EmptyPhaseShiftPlate(0, 0);
         }

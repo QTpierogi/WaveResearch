@@ -26,7 +26,7 @@ namespace WaveProject.Interaction
             var time = TotalDeltaDistance * Sensitivity;
             SetPosition(time);
             
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 FinishChanging();
             }

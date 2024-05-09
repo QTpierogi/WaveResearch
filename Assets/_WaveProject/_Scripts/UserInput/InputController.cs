@@ -13,10 +13,10 @@ namespace WaveProject.UserInput
         private ISelectable _currentPotentialSubscriber;
 
         private Vector2 _previousMousePosition;
-        private bool _returnedToCamera;
-        
-        private Vector2 CurrentMousePosition => Input.mousePosition;
-        private Vector2 Delta => new(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+        private Camera _camera;
+
+        private static Vector2 CurrentMousePosition => Input.mousePosition;
+        private static Vector2 Delta => new(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
         private const float _RAYCAST_DISTANCE = 1000;
 
@@ -25,6 +25,11 @@ namespace WaveProject.UserInput
             CustomUpdate();
             SetOutline();
             TrySubscribe();
+        }
+        
+        public void SetCamera(Camera cam)
+        {
+            _camera = cam;
         }
 
         public void SetCameraMover(CameraDirectionSetter cameraDirectionSetter)
@@ -49,7 +54,7 @@ namespace WaveProject.UserInput
             if (_currentSubscriber is not CameraDirectionSetter)
                 return;
             
-            var ray = Camera.main.ScreenPointToRay(CurrentMousePosition);
+            var ray = _camera.ScreenPointToRay(CurrentMousePosition);
 
             if (Physics.Raycast(ray, out var hit, _RAYCAST_DISTANCE,IInputSubscriber.LayerMask))
             {
@@ -75,13 +80,6 @@ namespace WaveProject.UserInput
         private void TrySubscribe()
         {
             if (Input.GetMouseButtonDown(0) == false) return;
-
-            // нужно в том случае, когда насильно вышли из подписчика и сразу же подписывается на него обратно
-            if (_returnedToCamera)
-            {
-                _returnedToCamera = false;
-                return;
-            }
             
             if (_currentPotentialSubscriber is IInputSubscriber subscriber)
             {
@@ -108,8 +106,6 @@ namespace WaveProject.UserInput
 
         private void ReturnToCameraHandler()
         {
-            _returnedToCamera = _currentSubscriber.OneClickInteracting == false;
-            
             _currentSubscriber.ChangingFinished -= ReturnToCameraHandler;
             Subscribe(_cameraDirectionSetter);
         }

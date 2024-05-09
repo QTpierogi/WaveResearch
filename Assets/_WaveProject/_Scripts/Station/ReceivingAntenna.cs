@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using WaveProject.Interaction;
 using WaveProject.Utility;
@@ -10,6 +11,7 @@ namespace WaveProject.Station
         [SerializeField] private float _baseDistance = 4;
         [SerializeField] private MoveBetweenPointsInteractable _secondAntenna;
         [SerializeField] private InfiniteRotateInteractable _rotatePart;
+        [SerializeField] private TMP_Text _rotationText;
         
         public float PowerFactor { get; private set; }
         public float Frequency { get; private set; }
@@ -26,6 +28,11 @@ namespace WaveProject.Station
             
             _rotatePart.Init();
             _rotatePart.SetDefaultRotation();
+        }
+
+        private void Update()
+        {
+            _rotationText.text = $"{MathF.Round(GetRotation())}";
         }
 
         public float GetAntennasDistanceFactor()
