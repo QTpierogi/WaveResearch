@@ -102,13 +102,13 @@ namespace WaveProject.UI.ExtendedButton
                 _data.Image.transform.DOScale(imageSize, _data.ImageSizes.FadeDuration);
 
             if (_data.Edits.HasFlag(ExtendedButtonData.ExtendedButtonEdits.ImageSprite))
-                _data.TextElement.DOColor(textElementColor, _data.TextElementColors.fadeDuration);
-            
+                _data.Image.overrideSprite = transitionSprite;
+
             if (_data.Edits.HasFlag(ExtendedButtonData.ExtendedButtonEdits.TextColor))
-                _data.TextElement.transform.DOScale(textElementSize, _data.TextElementSizes.FadeDuration);
+                _data.TextElement.DOColor(textElementColor, _data.TextElementColors.fadeDuration);
 
             if (_data.Edits.HasFlag(ExtendedButtonData.ExtendedButtonEdits.TextSize))
-                image.overrideSprite = transitionSprite;
+                _data.TextElement.transform.DOScale(textElementSize, _data.TextElementSizes.FadeDuration);
         }
     }
 }
