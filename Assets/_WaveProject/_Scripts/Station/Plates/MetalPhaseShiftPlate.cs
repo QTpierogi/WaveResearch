@@ -69,7 +69,7 @@ namespace WaveProject.Station.Plates
         {
             var g = GetG(variantWavelength);
             
-            return Math.Sqrt(1 - Math.Pow(g, 2));
+            return Math.Sqrt(1 - Math.Pow(Complex.Abs(g), 2));
         }
 
         private double GetWavelength01(double variantWavelength)
@@ -81,7 +81,7 @@ namespace WaveProject.Station.Plates
             return variantWavelength / sqrt;
         }
         
-        private double GetG(double variantWavelength)
+        private Complex GetG(double variantWavelength)
         {
             var z10 = GetZ10(variantWavelength);
             var zIn = GetZIn(variantWavelength);
@@ -91,7 +91,7 @@ namespace WaveProject.Station.Plates
                 (z10 + zIn);
         }
 
-        private double GetZIn(double variantWavelength)
+        private Complex GetZIn(double variantWavelength)
         {
             const double pi = Mathf.PI;
 
@@ -102,11 +102,11 @@ namespace WaveProject.Station.Plates
 
             var tanArg = 2 * pi * PlateLength / lambda01;
 
-            var complex = new Complex(0, 1);
+            var j = Complex.ImaginaryOne;
             
             return z01 * 
-                   (z10 + complex.Imaginary * z01 * Math.Tan(tanArg)) / 
-                   (z01 + complex.Imaginary * z10 * Math.Tan(tanArg));
+                   (z10 + j * z01 * Math.Tan(tanArg)) / 
+                   (z01 + j * z10 * Math.Tan(tanArg));
         }
 
         private double GetZ10(double variantWavelength)
