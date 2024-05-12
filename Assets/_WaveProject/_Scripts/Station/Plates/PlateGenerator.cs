@@ -1,118 +1,83 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using WaveProject.Interaction;
+using WaveProject.UI;
 
 namespace WaveProject.Station.Plates
 {
     public class PlateGenerator : MonoBehaviour
     {
         [SerializeField] private Receiver _receiver;
-
-        [SerializeField] private Toggle _powerToggle;
+        [SerializeField] private PlateUiView _plateUiView;
 
         [Space] 
         [SerializeField] private InteractableButton _selectMetalButton;
         [SerializeField] private InteractableButton _selectDielectricButton;
 
         [Space] 
-        [SerializeField] private GameObject _selectView;
-        [SerializeField] private GameObject _setupView;
-        [SerializeField] private GameObject _resetView;
+        [SerializeField] private int _lengthMinValue;
+        [SerializeField] private int _lengthMaxValue;
 
-        [SerializeField] private Slider3D _lengthSlider;
-        [SerializeField] private Slider3D _thicknessSlider;
-        [SerializeField] private Slider3D _resistanceSlider;
-        
-        [Space] 
-        [SerializeField] private TMP_Text _lengthText;
-        [SerializeField] private TMP_Text _thicknessText;
-        [SerializeField] private TMP_Text _resistanceText;
-        
-        [Space] 
-        [SerializeField] private InteractableButton _backButton;
-        [SerializeField] private InteractableButton _createButton;
+        [SerializeField] private int _thicknessMinValue;
+        [SerializeField] private int _thicknessMaxValue;
+
+        [SerializeField] private int _resistanceMinValue;
+        [SerializeField] private int _resistanceMaxValue;
 
         [Space] 
-        [SerializeField] private Plate _platePrefab;
+        [SerializeField] private Plate _metalPlatePrefab;
+        [SerializeField] private Plate _dielectricPlatePrefab;
         [SerializeField] private Transform _plateSpawnPoint;
 
         private float _length;
         private float _thickness;
         private float _resistance;
+
         private PlateType _plateType;
-        
         private Plate _currentPlate;
 
         private void Start()
         {
-            TogglePower(false);
-            _powerToggle.Toggled.AddListener(TogglePower);
+            _plateUiView.Init(Create, 
+                _lengthMinValue,
+                _lengthMaxValue,
+                _thicknessMinValue,
+                _thicknessMaxValue,
+                _resistanceMinValue,
+                _resistanceMaxValue);
+
+            _plateUiView.LengthChanged += OnLengthChanged;
+            _plateUiView.ThicknessChanged += OnThicknessChanged;
+            _plateUiView.ResistanceChanged += OnResistanceChanged;
+
             _selectMetalButton.Clicked.AddListener(SelectMetalPlate);
             _selectDielectricButton.Clicked.AddListener(SelectDielectricPlate);
-            
-            _lengthSlider.Init();
-            _thicknessSlider.Init();
-            _resistanceSlider.Init();
-
-            _lengthSlider.OnValueChanged.AddListener(ChangeLength);
-            _thicknessSlider.OnValueChanged.AddListener(ChangeThickness);
-            _resistanceSlider.OnValueChanged.AddListener(ChangeResistance);
-
-            _backButton.Clicked.AddListener(Reset);
-
-            _createButton.Clicked.AddListener(Create);
         }
 
-        private void Reset() => TogglePower(true);
-
-        private void ChangeLength(float time) => _length = ChangeParameter(_lengthText, time, 0, 100);
-        private void ChangeThickness(float time) => _thickness = ChangeParameter(_thicknessText, time, 0, 100);
-        private void ChangeResistance(float time) => _resistance = ChangeParameter(_resistanceText, time, 0, 100);
-
-        private float ChangeParameter(TMP_Text lengthText, float time, float min, float max)
+        private void OnDestroy()
         {
-            var newValue = Mathf.Lerp(min, max, time);
-            lengthText.text = newValue.ToString(CultureInfo.InvariantCulture);
-            return newValue;
+            _plateUiView.LengthChanged -= OnLengthChanged;
+            _plateUiView.ThicknessChanged -= OnThicknessChanged;
+            _plateUiView.ResistanceChanged -= OnResistanceChanged;
         }
+
+        private void OnLengthChanged(float value) => _length = value;
+        private void OnThicknessChanged(float value) => _thickness = value;
+        private void OnResistanceChanged(float value) => _resistance = value;
 
         private void SelectMetalPlate()
         {
             _plateType = PlateType.Metal;
-            _setupView.SetActive(true);
-            _selectView.SetActive(false);
-            _resetView.SetActive(true);
-
-            _resistanceText.gameObject.SetActive(false);
-            _resistanceSlider.Hide();
+            _plateUiView.SelectMetalPlate();
         }
 
         private void SelectDielectricPlate()
         {
             _plateType = PlateType.Dielectric;
-            _setupView.SetActive(true);
-            _selectView.SetActive(false);
-            _resetView.SetActive(true);
-
-            _resistanceText.gameObject.SetActive(true);
-            _resistanceSlider.Show();
-        }
-
-        private void TogglePower(bool isOn)
-        {
-            if (isOn)
-            {
-                _selectView.SetActive(true);
-                _setupView.SetActive(false);
-                _resetView.SetActive(false);
-            }
-            else
-            {
-                _selectView.SetActive(false);
-                _setupView.SetActive(false);
-                _resetView.SetActive(false);
-            }
+            _plateUiView.SelectDielectricPlate();
         }
 
         private void Create()
@@ -122,20 +87,20 @@ namespace WaveProject.Station.Plates
             //     _receiver.SetPhaseShiftPlate(PlateType.None, 0, 0, 0);
             //     return;
             // }
-                
+
             _receiver.SetPhaseShiftPlate(_plateType, _length, _thickness, _resistance);
 
             if (_currentPlate != null)
             {
                 Destroy(_currentPlate.gameObject);
             }
-            
-            _currentPlate = Instantiate(_platePrefab, _plateSpawnPoint.position, _plateSpawnPoint.rotation, _plateSpawnPoint);
-            _currentPlate.SetKinematic(false);
-            _currentPlate.gameObject.SetActive(true);
-            _currentPlate.SetSize(_length, _thickness);
-                
-            Reset();
+
+            _currentPlate = Instantiate(_metalPlatePrefab, _plateSpawnPoint.position, _plateSpawnPoint.rotation,
+                _plateSpawnPoint);
+            // _currentPlate.SetKinematic(false);
+            // _currentPlate.SetSize(_length, _thickness);
+
+            // _plateUiView.Reset();
         }
     }
 }

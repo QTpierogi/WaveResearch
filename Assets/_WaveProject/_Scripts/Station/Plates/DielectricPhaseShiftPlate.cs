@@ -89,7 +89,7 @@ namespace WaveProject.Station.Plates
         {
             var g = GetG(variantWavelength, plateLength, plateThickness);
             
-            return Math.Sqrt(1 - Math.Pow(g, 2));
+            return Math.Sqrt(1 - Math.Pow(Math.Abs(g), 2));
         }
         
         private double GetG(double variantWavelength, double plateLength, double plateThickness)
