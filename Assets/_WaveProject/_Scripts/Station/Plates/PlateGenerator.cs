@@ -1,9 +1,5 @@
-﻿using System;
-using System.Globalization;
-using Cinemachine;
-using TMPro;
+﻿using Cinemachine;
 using UnityEngine;
-using UnityEngine.UI;
 using WaveProject.Interaction;
 using WaveProject.Services;
 using WaveProject.UI;
@@ -87,6 +83,8 @@ namespace WaveProject.Station.Plates
 
         private void SelectMetalPlate()
         {
+            _inputController.BlockUserInput(true);
+            
             _virtualCamera.gameObject.SetActive(true);
             
             _plateType = PlateType.Metal;
@@ -100,6 +98,8 @@ namespace WaveProject.Station.Plates
 
         private void SelectDielectricPlate()
         {
+            _inputController.BlockUserInput(true);
+            
             _virtualCamera.gameObject.SetActive(true);
             
             _plateType = PlateType.Dielectric;
@@ -128,6 +128,16 @@ namespace WaveProject.Station.Plates
         {
             _currentPlate.Init();
             _inputController.ExternSubscribe(_currentPlate.MovementInteractable);
+
+            _currentPlate.MovementInteractable.ChangingFinished += FinishPlateInserting;
+        }
+
+        private void FinishPlateInserting()
+        {
+            _currentPlate.MovementInteractable.ChangingFinished -= FinishPlateInserting;
+
+            _virtualCamera.gameObject.SetActive(false);
+            _inputController.BlockUserInput(false);
         }
     }
 }

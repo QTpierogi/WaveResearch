@@ -20,13 +20,19 @@ namespace WaveProject.UserInput
 
         private const float _RAYCAST_DISTANCE = 1000;
 
+        public bool IsUserInputBlocked { get; private set; }
+
         private void Update()
         {
             CustomUpdate();
+
+            if (IsUserInputBlocked)
+                return;
+            
             FindOutliner();
             TrySubscribe();
         }
-        
+
         public void SetCamera(Camera cam)
         {
             _camera = cam;
@@ -50,6 +56,14 @@ namespace WaveProject.UserInput
             else ClearOutline();
             
             Subscribe(externSubscriber);
+        }
+
+        public void BlockUserInput(bool value)
+        {
+            IsUserInputBlocked = value;
+            
+            ReturnToCameraHandler();
+            ClearOutline();
         }
 
         private void CustomUpdate()
