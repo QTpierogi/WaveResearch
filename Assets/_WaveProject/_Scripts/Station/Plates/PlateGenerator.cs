@@ -48,7 +48,7 @@ namespace WaveProject.Station.Plates
 
         private void Start()
         {
-            _plateUiView.Init(Show, 
+            _plateUiView.Init(Show, Back,
                 _lengthMinValue,
                 _lengthMaxValue,
                 _thicknessMinValue,
@@ -114,6 +114,9 @@ namespace WaveProject.Station.Plates
         private void Show()
         {
             _receiver.SetPhaseShiftPlate(_plateType, _length, _thickness, _resistance);
+
+            if (_currentPlate != null) 
+                _currentPlate.Hide();
             
             _currentPlate = _plateType == PlateType.Metal ? _metalPlate : _dielectricPlate;
             _currentPlate.gameObject.SetActive(true);
@@ -132,9 +135,16 @@ namespace WaveProject.Station.Plates
             _currentPlate.MovementInteractable.ChangingFinished += FinishPlateInserting;
         }
 
+        private void Back()
+        {
+            _plateUiView.gameObject.SetActive(false);
+            FinishPlateInserting();
+        }
+
         private void FinishPlateInserting()
         {
-            _currentPlate.MovementInteractable.ChangingFinished -= FinishPlateInserting;
+            if (_currentPlate != null) 
+                _currentPlate.MovementInteractable.ChangingFinished -= FinishPlateInserting;
 
             _virtualCamera.gameObject.SetActive(false);
             _inputController.BlockUserInput(false);

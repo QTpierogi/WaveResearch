@@ -8,17 +8,22 @@ namespace WaveProject.UI
 {
     public class PlateUiView : MonoBehaviour
     {
-        [Space] [SerializeField] private Slider _lengthSlider;
+        [Space] 
+        [SerializeField] private Slider _lengthSlider;
         [SerializeField] private Slider _thicknessSlider;
         [SerializeField] private Slider _resistanceSlider;
 
-        [Space] [SerializeField] private TMP_Text _lengthText;
+        [Space] 
+        [SerializeField] private TMP_Text _lengthText;
         [SerializeField] private TMP_Text _thicknessText;
         [SerializeField] private TMP_Text _resistanceText;
-
-        [Space] [SerializeField] private Button _backButton;
-        [SerializeField] private Button _createButton;
         
+        [Space] 
+        [SerializeField] private GameObject _resistance;
+        
+        [Space] 
+        [SerializeField] private Button _backButton;
+        [SerializeField] private Button _createButton;
         private bool _lengthConfigured;
         private bool _thicknessConfigured;
         private bool _resistanceConfigured;
@@ -27,8 +32,7 @@ namespace WaveProject.UI
         public event Action<float> ThicknessChanged;
         public event Action<float> ResistanceChanged;
 
-        public void Init(
-            Action create,
+        public void Init(Action create, Action back,
             int lengthMinValue,
             int lengthMaxValue,
             int thicknessMinValue,
@@ -36,8 +40,6 @@ namespace WaveProject.UI
             float resistanceMinValue,
             float resistanceMaxValue)
         {
-            // Reset();
-
             _lengthSlider.minValue = lengthMinValue;
             _lengthSlider.maxValue = lengthMaxValue;
             _lengthSlider.value = 0;
@@ -54,7 +56,7 @@ namespace WaveProject.UI
             _thicknessSlider.onValueChanged.AddListener(ChangeThickness);
             _resistanceSlider.onValueChanged.AddListener(ChangeResistance);
 
-            // _backButton.onClick.AddListener(Reset);
+            _backButton.onClick.AddListener(() => back());
             _createButton.onClick.AddListener(() => create());
             
             _createButton.interactable = false;
@@ -86,31 +88,35 @@ namespace WaveProject.UI
 
         public void SelectMetalPlate()
         {
-            _resistanceText.gameObject.SetActive(false);
+            _resistance.gameObject.SetActive(false);
+            _createButton.interactable = false;
+
             StartCoroutine(WaitAllConfigured(true));
+        }
+
+        public void SelectDielectricPlate()
+        {
+            _resistance.gameObject.SetActive(true);
+            _createButton.interactable = false;
+
+            StartCoroutine(WaitAllConfigured(false));
         }
 
         private IEnumerator WaitAllConfigured(bool isMetal)
         {
             if (isMetal)
             {
-                yield return new WaitWhile(() => _lengthConfigured == false &&
+                yield return new WaitWhile(() => _lengthConfigured == false ||
                                                  _thicknessConfigured == false);
             }
             else
             {
-                yield return new WaitWhile(() => _lengthConfigured == false &&
-                                                 _thicknessConfigured == false &&
+                yield return new WaitWhile(() => _lengthConfigured == false ||
+                                                 _thicknessConfigured == false ||
                                                  _resistanceConfigured == false);
             }
             
             _createButton.interactable = true;
-        }
-
-        public void SelectDielectricPlate()
-        {
-            _resistanceText.gameObject.SetActive(true);
-            StartCoroutine(WaitAllConfigured(false));
         }
     }
 }

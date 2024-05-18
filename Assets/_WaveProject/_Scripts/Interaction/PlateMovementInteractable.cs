@@ -13,6 +13,8 @@ namespace WaveProject.Interaction
 
         public override void CustomUpdate(Vector2 delta)
         {
+            if (Input.GetMouseButton(0) == false) return;
+            
             UpdateDeltaDistance(delta);
             
             var time = TotalDeltaDistance * Sensitivity;
@@ -20,11 +22,15 @@ namespace WaveProject.Interaction
 
             SetColor();
 
-            if (!Input.GetMouseButtonUp(0)) return;
             if (IsCorrectPlace())
             {
                 FinishChanging();
             }
+        }
+
+        public void ResetToDefault()
+        {
+            TotalDeltaDistance = 0;
         }
 
         private void SetColor()

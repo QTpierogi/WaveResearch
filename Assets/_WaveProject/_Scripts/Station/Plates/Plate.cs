@@ -33,6 +33,13 @@ namespace WaveProject.Station.Plates
         public void SetStart()
         {
             transform.position = _defaultPosition;
+            MovementInteractable.ResetToDefault();
+        }
+
+        public void Hide()
+        {
+            SetStart();
+            gameObject.SetActive(false);
         }
 
         public void MoveToAntenna(float moveDuration, TweenCallback callback)

@@ -77,6 +77,9 @@ namespace WaveProject.Station.Plates
             var a = INTERNAL_WAVEGUIDE_WIDTH;
 
             var pow = Math.Pow(variantWavelength / 2 * (a - PlateThickness), 2);
+            
+            pow = Math.Clamp(pow, 0, .99999999999d); //TODO: may be wrong
+            
             var sqrt = Math.Sqrt(1 - pow);
             return variantWavelength / sqrt;
         }
@@ -126,6 +129,9 @@ namespace WaveProject.Station.Plates
             var a = INTERNAL_WAVEGUIDE_WIDTH;
 
             var pow = Math.Pow(variantWavelength / (2 * (a - PlateThickness)), 2);
+
+            pow = Math.Clamp(pow, 0, .99999999999d); //TODO: may be wrong
+            
             var sqrt = Math.Sqrt(1 - pow);
             
             return 120 * pi / sqrt;
