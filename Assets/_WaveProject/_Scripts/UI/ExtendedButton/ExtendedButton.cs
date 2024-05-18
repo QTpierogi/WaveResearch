@@ -15,16 +15,16 @@ namespace WaveProject.UI.ExtendedButton
             transition = Transition.None;
         }
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
             _data = GetComponent<ExtendedButtonData>();
             transition = Transition.None;
         }
 
         protected override void DoStateTransition(SelectionState state, bool instant)
         {
-            if (!gameObject.activeInHierarchy || _data == null)
+            if (!gameObject.activeInHierarchy)
                 return;
 
             if (_data.Edits.Equals(ExtendedButtonData.ExtendedButtonEdits.None))
