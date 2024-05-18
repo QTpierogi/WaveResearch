@@ -6,7 +6,6 @@ namespace WaveProject.UserInput
     public interface IInputSubscriber
     {
         public event Action ChangingFinished;
-        bool OneClickInteracting { get; }
 
         const string LAYER = "Interactable";
         static LayerMask LayerMask => LayerMask.GetMask(LAYER);

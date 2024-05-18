@@ -23,7 +23,7 @@ namespace WaveProject.UserInput
         private void Update()
         {
             CustomUpdate();
-            SetOutline();
+            FindOutliner();
             TrySubscribe();
         }
         
@@ -43,13 +43,22 @@ namespace WaveProject.UserInput
             _fovChanger = fovChanger;
         }
 
+        public void ExternSubscribe(IInputSubscriber externSubscriber)
+        {
+            if (externSubscriber is ISelectable selectable)
+                SetOutline(selectable);
+            else ClearOutline();
+            
+            Subscribe(externSubscriber);
+        }
+
         private void CustomUpdate()
         {
             _currentSubscriber.CustomUpdate(Delta);
             _fovChanger.CustomUpdate();
         }
 
-        private void SetOutline()
+        private void FindOutliner()
         {
             if (_currentSubscriber is not CameraDirectionSetter)
                 return;
@@ -60,21 +69,30 @@ namespace WaveProject.UserInput
             {
                 if (hit.collider.TryGetComponent(out ISelectable selectable))
                 {
-                    _currentPotentialSubscriber?.Deselect();
-                    _currentPotentialSubscriber = selectable;
-                    _currentPotentialSubscriber.Select();
+                    SetOutline(selectable);
                 }
                 else
                 {
-                    _currentPotentialSubscriber?.Deselect();
-                    _currentPotentialSubscriber = null;
+                    ClearOutline();
                 }
             }
             else
             {
-                _currentPotentialSubscriber?.Deselect();
-                _currentPotentialSubscriber = null;
+                ClearOutline();
             }
+        }
+
+        private void ClearOutline()
+        {
+            _currentPotentialSubscriber?.Deselect();
+            _currentPotentialSubscriber = null;
+        }
+
+        private void SetOutline(ISelectable selectable)
+        {
+            _currentPotentialSubscriber?.Deselect();
+            _currentPotentialSubscriber = selectable;
+            _currentPotentialSubscriber.Select();
         }
 
         private void TrySubscribe()

@@ -55,6 +55,7 @@ namespace WaveProject.Station
             _toggle.SetDefaultToggledState(false);
             
             _phaseShiftPlate = new EmptyPhaseShiftPlate(0, 0);
+            // _phaseShiftPlate = new MetalPhaseShiftPlate(40, 6.5f);
         }
 
         private void LoadData()

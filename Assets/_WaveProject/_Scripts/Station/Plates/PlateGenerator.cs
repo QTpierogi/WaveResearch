@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Globalization;
+using Cinemachine;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WaveProject.Interaction;
+using WaveProject.Services;
 using WaveProject.UI;
+using WaveProject.UserInput;
 
 namespace WaveProject.Station.Plates
 {
@@ -24,13 +27,16 @@ namespace WaveProject.Station.Plates
         [SerializeField] private int _thicknessMinValue;
         [SerializeField] private int _thicknessMaxValue;
 
-        [SerializeField] private int _resistanceMinValue;
-        [SerializeField] private int _resistanceMaxValue;
+        [SerializeField] private float _resistanceMinValue;
+        [SerializeField] private float _resistanceMaxValue;
 
         [Space] 
-        [SerializeField] private Plate _metalPlatePrefab;
-        [SerializeField] private Plate _dielectricPlatePrefab;
-        [SerializeField] private Transform _plateSpawnPoint;
+        [SerializeField] private Plate _metalPlate;
+        [SerializeField] private Plate _dielectricPlate;
+
+        [SerializeField] private float _moveDuration = 1;
+
+        [SerializeField] private CinemachineVirtualCamera _virtualCamera;
 
         private float _length;
         private float _thickness;
@@ -38,10 +44,15 @@ namespace WaveProject.Station.Plates
 
         private PlateType _plateType;
         private Plate _currentPlate;
+        
+        private RoutineService _routines;
+        private float _uiShowWaitTime = 1f;
+        
+        private InputController _inputController;
 
         private void Start()
         {
-            _plateUiView.Init(Create, 
+            _plateUiView.Init(Show, 
                 _lengthMinValue,
                 _lengthMaxValue,
                 _thicknessMinValue,
@@ -52,9 +63,15 @@ namespace WaveProject.Station.Plates
             _plateUiView.LengthChanged += OnLengthChanged;
             _plateUiView.ThicknessChanged += OnThicknessChanged;
             _plateUiView.ResistanceChanged += OnResistanceChanged;
+            
+            _selectMetalButton.Init();
+            _selectDielectricButton.Init();
 
             _selectMetalButton.Clicked.AddListener(SelectMetalPlate);
             _selectDielectricButton.Clicked.AddListener(SelectDielectricPlate);
+
+            if (ServiceManager.TryGetService(out RoutineService routines)) _routines = routines;
+            if (ServiceManager.TryGetService(out InputController inputController)) _inputController = inputController;
         }
 
         private void OnDestroy()
@@ -70,37 +87,47 @@ namespace WaveProject.Station.Plates
 
         private void SelectMetalPlate()
         {
+            _virtualCamera.gameObject.SetActive(true);
+            
             _plateType = PlateType.Metal;
-            _plateUiView.SelectMetalPlate();
+            
+            _routines.WaitTime(_uiShowWaitTime, this, () =>
+            {
+                _plateUiView.gameObject.SetActive(true);
+                _plateUiView.SelectMetalPlate();
+            });
         }
 
         private void SelectDielectricPlate()
         {
+            _virtualCamera.gameObject.SetActive(true);
+            
             _plateType = PlateType.Dielectric;
-            _plateUiView.SelectDielectricPlate();
+            
+            _routines.WaitTime(_uiShowWaitTime, this, () =>
+            {
+                _plateUiView.gameObject.SetActive(true);
+                _plateUiView.SelectDielectricPlate();
+            });
         }
 
-        private void Create()
+        private void Show()
         {
-            // if (_length == 0 || _thickness == 0 || _resistance == 0)
-            // {
-            //     _receiver.SetPhaseShiftPlate(PlateType.None, 0, 0, 0);
-            //     return;
-            // }
-
             _receiver.SetPhaseShiftPlate(_plateType, _length, _thickness, _resistance);
+            
+            _currentPlate = _plateType == PlateType.Metal ? _metalPlate : _dielectricPlate;
+            _currentPlate.gameObject.SetActive(true);
 
-            if (_currentPlate != null)
-            {
-                Destroy(_currentPlate.gameObject);
-            }
+            _currentPlate.SetStart();
+            _currentPlate.MoveToAntenna(_moveDuration, OnPlateMoved);
+            
+            _plateUiView.gameObject.SetActive(false);
+        }
 
-            _currentPlate = Instantiate(_metalPlatePrefab, _plateSpawnPoint.position, _plateSpawnPoint.rotation,
-                _plateSpawnPoint);
-            // _currentPlate.SetKinematic(false);
-            // _currentPlate.SetSize(_length, _thickness);
-
-            // _plateUiView.Reset();
+        private void OnPlateMoved()
+        {
+            _currentPlate.Init();
+            _inputController.ExternSubscribe(_currentPlate.MovementInteractable);
         }
     }
 }

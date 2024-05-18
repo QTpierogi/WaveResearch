@@ -11,8 +11,8 @@ namespace WaveProject.Station.Plates
 
         public override double GetReceiverSignalLevel(float angleInRadians, double variantWavelength)
         {
-            var betta = Utils.DegreeToRadians(90f);
-            const float r = 0f;
+            var betta = Utils.DegreeToRadians(82.5f);
+            const float r = 0.0f;
 
             var cosOfAngle = Math.Cos(angleInRadians - betta);
             return Math.Pow(Math.Abs(cosOfAngle) * (1 - r) + r, 2) * 100;
