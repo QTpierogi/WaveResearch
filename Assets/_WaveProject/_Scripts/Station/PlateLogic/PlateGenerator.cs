@@ -2,10 +2,11 @@
 using UnityEngine;
 using WaveProject.Interaction;
 using WaveProject.Services;
+using WaveProject.Station.PlateLogic.Plates;
 using WaveProject.UI;
 using WaveProject.UserInput;
 
-namespace WaveProject.Station.Plates
+namespace WaveProject.Station.PlateLogic
 {
     public class PlateGenerator : MonoBehaviour
     {
@@ -44,11 +45,11 @@ namespace WaveProject.Station.Plates
         private Plate _currentPlate;
         
         private RoutineService _routines;
-        private float _uiShowWaitTime = 1f;
-        
+        private const float _UI_SHOW_WAIT_TIME = 1f;
+
         private InputController _inputController;
 
-        private void Start()
+        public void Init()
         {
             _plateUiView.Init(Show, Back,
                 _lengthMinValue,
@@ -105,7 +106,7 @@ namespace WaveProject.Station.Plates
             
             _plateType = PlateType.Metal;
             
-            _routines.WaitTime(_uiShowWaitTime, this, () =>
+            _routines.WaitTime(_UI_SHOW_WAIT_TIME, this, () =>
             {
                 _plateUiView.gameObject.SetActive(true);
                 _plateUiView.SelectMetalPlate();
@@ -120,7 +121,7 @@ namespace WaveProject.Station.Plates
             
             _plateType = PlateType.Dielectric;
             
-            _routines.WaitTime(_uiShowWaitTime, this, () =>
+            _routines.WaitTime(_UI_SHOW_WAIT_TIME, this, () =>
             {
                 _plateUiView.gameObject.SetActive(true);
                 _plateUiView.SelectDielectricPlate();

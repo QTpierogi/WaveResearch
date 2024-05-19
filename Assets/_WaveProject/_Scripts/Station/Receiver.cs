@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using WaveProject.Configs;
 using WaveProject.Interaction;
-using WaveProject.Station.Plates;
+using WaveProject.Station.PlateLogic.Plates;
 using WaveProject.Utility;
 
 namespace WaveProject.Station
@@ -43,7 +43,7 @@ namespace WaveProject.Station
             }
         }
 
-        private void Start()
+        public void Init()
         {
             LoadData();
             StartCoroutine(AimForResultValue());

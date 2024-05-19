@@ -1,9 +1,6 @@
-﻿using System;
-using System.Numerics;
-using UnityEngine;
-using WaveProject.Configs;
+﻿using WaveProject.Configs;
 
-namespace WaveProject.Station.Plates
+namespace WaveProject.Station.PlateLogic.Plates
 {
     public abstract class PhaseShiftPlate
     {

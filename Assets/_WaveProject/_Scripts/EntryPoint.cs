@@ -1,6 +1,8 @@
 using UnityEngine;
 using WaveProject.Extensions;
 using WaveProject.Services;
+using WaveProject.Station;
+using WaveProject.Station.PlateLogic;
 using WaveProject.UserInput;
 
 namespace WaveProject
@@ -9,6 +11,11 @@ namespace WaveProject
     {
         [SerializeField] private CameraDirectionSetter _directionSetter;
         [SerializeField] private FovChanger _fovChanger;
+
+        [SerializeField] private Generator _generator;
+        [SerializeField] private Receiver _receiver;
+        [SerializeField] private ReceivingAntenna _receivingAntenna;
+        [SerializeField] private PlateGenerator _plateGenerator;
 
         private void Awake()
         {
@@ -21,6 +28,11 @@ namespace WaveProject
             input.SetFovChanger(_fovChanger);
             
             ServiceManager.TryAddService(input);
+            
+            _generator.Init();
+            _receiver.Init();
+            _receivingAntenna.Init();
+            _plateGenerator.Init();
         }
     }
 }

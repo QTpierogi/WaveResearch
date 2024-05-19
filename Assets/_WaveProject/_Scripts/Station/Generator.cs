@@ -46,7 +46,7 @@ namespace WaveProject.Station
             }
         }
 
-        private void Start()
+        public void Init()
         {
             LoadData();
             

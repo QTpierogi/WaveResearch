@@ -1,17 +1,16 @@
-﻿using System;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 using WaveProject.Interaction;
 using WaveProject.Utility;
 
-namespace WaveProject.Station.Plates
+namespace WaveProject.Station.PlateLogic
 {
     public class Plate : MonoBehaviour
     {
         [field: SerializeField] public PlateMovementInteractable MovementInteractable { get; private set; }
         private Vector3 _defaultPosition;
 
-        private void Awake()
+        private void Start()
         {
             _defaultPosition = transform.position;
         }

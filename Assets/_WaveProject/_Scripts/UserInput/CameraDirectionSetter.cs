@@ -15,9 +15,6 @@ namespace WaveProject.UserInput
 
         public event Action ChangingFinished;
 
-        public Transform Transform => transform;
-        public bool OneClickInteracting => false;
-
         private void Start()
         {
             LoadData();

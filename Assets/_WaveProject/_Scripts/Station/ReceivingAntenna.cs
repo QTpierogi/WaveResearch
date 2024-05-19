@@ -21,7 +21,7 @@ namespace WaveProject.Station
             _baseDistance = Vector3.Distance(_secondAntenna.Transform.position, transform.position);
         }
 
-        private void Start()
+        public void Init()
         {
             _secondAntenna.Init();
             _secondAntenna.SetDefaultValue();

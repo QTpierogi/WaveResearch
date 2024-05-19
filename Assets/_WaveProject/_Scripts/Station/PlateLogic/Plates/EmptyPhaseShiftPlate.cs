@@ -1,7 +1,7 @@
 ﻿using System;
 using WaveProject.Utility;
 
-namespace WaveProject.Station.Plates
+namespace WaveProject.Station.PlateLogic.Plates
 {
     internal class EmptyPhaseShiftPlate : PhaseShiftPlate
     {

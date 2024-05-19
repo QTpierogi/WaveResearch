@@ -2,9 +2,9 @@
 using System.Numerics;
 using UnityEngine;
 
-namespace WaveProject.Station.Plates
+namespace WaveProject.Station.PlateLogic.Plates
 {
-    class DielectricPhaseShiftPlate : PhaseShiftPlate
+    internal class DielectricPhaseShiftPlate : PhaseShiftPlate
     {
         private readonly double _resistance;
 

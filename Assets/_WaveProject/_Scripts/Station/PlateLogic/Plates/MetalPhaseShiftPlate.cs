@@ -2,7 +2,7 @@
 using System.Numerics;
 using UnityEngine;
 
-namespace WaveProject.Station.Plates
+namespace WaveProject.Station.PlateLogic.Plates
 {
     class MetalPhaseShiftPlate : PhaseShiftPlate
     {

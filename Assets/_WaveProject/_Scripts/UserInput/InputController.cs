@@ -124,14 +124,6 @@ namespace WaveProject.UserInput
             _currentSubscriber?.Disable();
             _currentSubscriber = subscriber;
             _currentSubscriber.Enable();
-
-            // if (_currentSubscriber is not CameraDirectionSetter)
-            // {
-            //     // var position = _currentSubscriber.Transform.position;
-            //     
-            //     // _cameraDirectionSetter.ChangeMoveTargetPosition(position);
-            //     // _cameraDirectionSetter.ChangeFov(position);
-            // }
             
             _currentSubscriber.ChangingFinished += ReturnToCameraHandler;
         }

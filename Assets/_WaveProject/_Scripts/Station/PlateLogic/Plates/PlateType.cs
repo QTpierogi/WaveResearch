@@ -1,4 +1,4 @@
-﻿namespace WaveProject.Station.Plates
+﻿namespace WaveProject.Station.PlateLogic.Plates
 {
     public enum PlateType
     {
