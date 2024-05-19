@@ -11,6 +11,8 @@ namespace WaveProject.Station.Plates
     {
         [SerializeField] private Receiver _receiver;
         [SerializeField] private PlateUiView _plateUiView;
+        [SerializeField] private RemovePlateUIView _removePlateUIView;
+        [SerializeField] private Transform _moveAntenn;
 
         [Space] 
         [SerializeField] private InteractableButton _selectMetalButton;
@@ -56,6 +58,11 @@ namespace WaveProject.Station.Plates
                 _resistanceMinValue,
                 _resistanceMaxValue);
 
+            _removePlateUIView.AddListener(RemovePlate);
+            
+            _metalPlate.transform.parent = _moveAntenn;
+            _dielectricPlate.transform.parent = _moveAntenn;
+
             _plateUiView.LengthChanged += OnLengthChanged;
             _plateUiView.ThicknessChanged += OnThicknessChanged;
             _plateUiView.ResistanceChanged += OnResistanceChanged;
@@ -80,6 +87,15 @@ namespace WaveProject.Station.Plates
         private void OnLengthChanged(float value) => _length = value;
         private void OnThicknessChanged(float value) => _thickness = value;
         private void OnResistanceChanged(float value) => _resistance = value;
+
+        private void RemovePlate()
+        {
+            if (_currentPlate != null) 
+                _currentPlate.Hide();
+            
+            _receiver.SetPhaseShiftPlate(PlateType.None);
+            _removePlateUIView.gameObject.SetActive(false);
+        }
 
         private void SelectMetalPlate()
         {
@@ -138,7 +154,8 @@ namespace WaveProject.Station.Plates
         private void Back()
         {
             _plateUiView.gameObject.SetActive(false);
-            FinishPlateInserting();
+            _virtualCamera.gameObject.SetActive(false);
+            _inputController.BlockUserInput(false);
         }
 
         private void FinishPlateInserting()
@@ -148,6 +165,8 @@ namespace WaveProject.Station.Plates
 
             _virtualCamera.gameObject.SetActive(false);
             _inputController.BlockUserInput(false);
+            
+            _removePlateUIView.gameObject.SetActive(true);
         }
     }
 }

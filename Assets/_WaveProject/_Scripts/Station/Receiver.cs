@@ -66,7 +66,7 @@ namespace WaveProject.Station
 
         public void ToggleEnabling(bool value) => _isEnable = value;
 
-        public void SetPhaseShiftPlate(PlateType type, float plateLength, float plateThickness, float plateResistance)
+        public void SetPhaseShiftPlate(PlateType type, float plateLength = 0, float plateThickness = 0, float plateResistance = 0)
         {
             var plateLengthInMeters = Utils.MillimetersToMeters(plateLength);
             var plateThicknessInMeters = Utils.MillimetersToMeters(plateThickness);

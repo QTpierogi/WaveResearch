@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace WaveProject.UI
+namespace WaveProject.UI.ExtendedButton
 {
     [Serializable]
     public struct SizeBlock : IEquatable<SizeBlock>

@@ -24,6 +24,7 @@ namespace WaveProject.UI
         [Space] 
         [SerializeField] private Button _backButton;
         [SerializeField] private Button _createButton;
+        
         private bool _lengthConfigured;
         private bool _thicknessConfigured;
         private bool _resistanceConfigured;
