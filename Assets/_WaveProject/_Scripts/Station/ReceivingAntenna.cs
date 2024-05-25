@@ -37,7 +37,7 @@ namespace WaveProject.Station
 
         public float GetAntennasDistanceFactor()
         {
-          return 1 * _baseDistance / Vector3.Distance(_secondAntenna.Transform.position, transform.position);
+          return 1 * _baseDistance / Mathf.Pow(Vector3.Distance(_secondAntenna.Transform.position, transform.position), 2);
         }
 
         public float GetRotation() => _rotatePart.GetRotation();
