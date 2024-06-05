@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using WaveProject.Interaction;
 using WaveProject.Services;
 
@@ -6,8 +7,9 @@ namespace WaveProject.UserInput
 {
     public class InputController : MonoBehaviour, IService
     {
+        private readonly List<IInputSubscriber> _infiniteSubscribers = new();
+        
         private CameraDirectionSetter _cameraDirectionSetter;
-        private FovChanger _fovChanger;
         
         private IInputSubscriber _currentSubscriber;
         private ISelectable _currentPotentialSubscriber;
@@ -38,7 +40,7 @@ namespace WaveProject.UserInput
             _camera = cam;
         }
 
-        public void SetCameraMover(CameraDirectionSetter cameraDirectionSetter)
+        public void SetCameraDirectionMover(CameraDirectionSetter cameraDirectionSetter)
         {
             _cameraDirectionSetter = cameraDirectionSetter;
             Subscribe(_cameraDirectionSetter);
@@ -46,7 +48,12 @@ namespace WaveProject.UserInput
 
         public void SetFovChanger(FovChanger fovChanger)
         {
-            _fovChanger = fovChanger;
+            _infiniteSubscribers.Add(fovChanger);
+        }
+
+        public void SetCameraMover(CameraMover cameraMover)
+        {
+            _infiniteSubscribers.Add(cameraMover);
         }
 
         public void ExternSubscribe(IInputSubscriber externSubscriber)
@@ -69,7 +76,7 @@ namespace WaveProject.UserInput
         private void CustomUpdate()
         {
             _currentSubscriber.CustomUpdate(Delta);
-            _fovChanger.CustomUpdate();
+            _infiniteSubscribers.ForEach(s => s.CustomUpdate(Delta));
         }
 
         private void FindOutliner()

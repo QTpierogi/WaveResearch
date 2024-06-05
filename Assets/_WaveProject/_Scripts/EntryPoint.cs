@@ -11,6 +11,7 @@ namespace WaveProject
     {
         [SerializeField] private CameraDirectionSetter _directionSetter;
         [SerializeField] private FovChanger _fovChanger;
+        [SerializeField] private CameraMover _cameraMover;
 
         [SerializeField] private Generator _generator;
         [SerializeField] private Receiver _receiver;
@@ -24,8 +25,9 @@ namespace WaveProject
 
             var input = this.Get<InputController>();
             input.SetCamera(Camera.main);
-            input.SetCameraMover(_directionSetter);
+            input.SetCameraDirectionMover(_directionSetter);
             input.SetFovChanger(_fovChanger);
+            input.SetCameraMover(_cameraMover);
             
             ServiceManager.TryAddService(input);
             

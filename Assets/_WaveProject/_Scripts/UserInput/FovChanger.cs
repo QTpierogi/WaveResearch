@@ -7,7 +7,7 @@ using WaveProject.Utility;
 
 namespace WaveProject.UserInput
 {
-    public class FovChanger : MonoBehaviour
+    public class FovChanger : MonoBehaviour, IInputSubscriber
     {
         [SerializeField] private CinemachineVirtualCamera _camera;
         
@@ -17,6 +17,8 @@ namespace WaveProject.UserInput
         
         private float _fovTarget;
         private float _fovSensitivity;
+
+        public event Action ChangingFinished;
 
         private void Start()
         {
@@ -37,14 +39,22 @@ namespace WaveProject.UserInput
             _fovChangingSpeed = InteractionSettings.Data.FovChangingSpeed;
         }
 
-        public void CustomUpdate()
+        public void Enable()
+        {
+        }
+
+        public void Disable()
+        {
+        }
+
+        public void CustomUpdate(Vector2 _)
         {
             if (Input.mouseScrollDelta.y == 0) return;
 
             _fovTarget -= Input.mouseScrollDelta.y * _fovSensitivity;
             _fovTarget = Mathf.Clamp(_fovTarget, _fovMinValue, _defaultFov);
         }
-        
+
         private IEnumerator ChangeFovRoutine()
         {
             yield return new WaitUntil(() => Utils.IsAlmostEqual(_fovTarget, _defaultFov, .01));
