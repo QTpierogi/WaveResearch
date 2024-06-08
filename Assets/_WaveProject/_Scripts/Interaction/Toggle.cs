@@ -11,26 +11,18 @@ namespace WaveProject.Interaction
 
         public UnityEvent<bool> Toggled => _toggled;
 
-        private bool _turnOn;
-        private Vector3 _defaultScale;
+        protected bool TurnOn;
 
-        public void SetDefaultToggledState(bool value)
+        public virtual void SetDefaultToggledState(bool value)
         {
-            _turnOn = value;
-            _defaultScale = transform.localScale;
+            TurnOn = value;
         }
 
         public override void CustomUpdate(Vector2 delta)
         {
-            _turnOn = !_turnOn;
-
-            var scaleFactor = new Vector3(1, _turnOn ? -1 : 1, 1);
-            var newScale = _defaultScale;
-            newScale.Scale(scaleFactor);
+            TurnOn = !TurnOn;
             
-            transform.localScale = newScale;
-            
-            Toggled?.Invoke(_turnOn);
+            Toggled?.Invoke(TurnOn);
             FinishChanging();
         }
     }

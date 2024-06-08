@@ -16,6 +16,8 @@ namespace WaveProject.Station
 
         [Header("Power settings")] 
         [Min(0), SerializeField] private float _defaultPower = 10;
+        [SerializeField] private Toggle _powerToggle;
+        [SerializeField] private MeshRenderer _powerMeshRenderer;
         [SerializeField] private RotateInteractable _powerHandle;
 
         [Space] 
@@ -32,6 +34,7 @@ namespace WaveProject.Station
         private float _maxPower;
         private float _powerStep;
         private float _currentPower;
+        private bool _isEnable;
 
         private void OnValidate()
         {
@@ -48,6 +51,8 @@ namespace WaveProject.Station
 
         public void Init()
         {
+            const bool defaultPower = false;
+            
             LoadData();
             
             _randomDeviation = Random.Range(1 - _deviationRange, 1 + _deviationRange);
@@ -57,6 +62,11 @@ namespace WaveProject.Station
             
             _powerHandle.Init();
             _powerHandle.SetDefaultValue(_defaultPower, 0, _maxPower);
+            
+            _powerToggle.Init();
+            _powerToggle.SetDefaultToggledState(defaultPower);
+            _powerToggle.Toggled.AddListener(ToggleEnabling);
+            ToggleEnabling(defaultPower);
         }
 
         private void LoadData()
@@ -72,10 +82,19 @@ namespace WaveProject.Station
 
         private void Update()
         {
-            _currentFrequency = Utils.RoundToIncrement(_frequencyHandle.GetValue(), _frequencyStep);
-            _currentPower = Utils.RoundToIncrement(_powerHandle.GetValue(), _powerStep);
+            _currentFrequency = _isEnable ? Utils.RoundToIncrement(_frequencyHandle.GetValue(), _frequencyStep) : 0;
+            _currentPower = _isEnable ? Utils.RoundToIncrement(_powerHandle.GetValue(), _powerStep) : 0;
             
             SendData();
+        }
+        
+        private void ToggleEnabling(bool value)
+        {
+            _isEnable = value;
+            
+            if (_isEnable) 
+                _powerMeshRenderer.material.EnableKeyword("_EMISSION");
+            else _powerMeshRenderer.material.DisableKeyword("_EMISSION");
         }
 
         private void SendData()

@@ -6,6 +6,7 @@ using WaveProject.Configs;
 using WaveProject.Interaction;
 using WaveProject.Station.PlateLogic.Plates;
 using WaveProject.Utility;
+using Random = UnityEngine.Random;
 
 namespace WaveProject.Station
 {
@@ -13,7 +14,10 @@ namespace WaveProject.Station
     {
         [Min(0), SerializeField] private float _defaultScaleFactor = 1;
         [SerializeField] private RotateInteractable _scaleFactorHandle;
-        [SerializeField] private Toggle _toggle;
+        [SerializeField] private RotateInteractable _zeroOffsetHandle;
+        [SerializeField] private Switcher _switcher;
+        [SerializeField] private Toggle _powerToggle;
+        [SerializeField] private MeshRenderer _powerMeshRenderer;
 
         [Space] 
         [SerializeField] private TMP_Text _text;
@@ -23,17 +27,23 @@ namespace WaveProject.Station
         [Space] 
         [SerializeField] private ReceivingAntenna _receivingAntenna;
 
-        private float _result;
-        private int _turnOn;
         private int _speedFactor;
+        private float _speedToTarget;
         
         private float _maxScaleFactor;
+        
+        private float _minZeroOffsetFactor;
+        private float _maxZeroOffsetFactor;
+        
         private bool _isEnable;
-        private float _speedToTarget;
+
+        private bool _isZeroOffset;
+        private float _zeroOffset;
         
         private PhaseShiftPlate _phaseShiftPlate;
 
-        private float CurrentTarget => _result * _turnOn;
+        private float _result;
+        private float CurrentTarget => Math.Clamp(_result * (_isEnable ? 1 : 0), 0, 100) + _zeroOffset;
 
         private void OnValidate()
         {
@@ -45,26 +55,54 @@ namespace WaveProject.Station
 
         public void Init()
         {
+            const bool defaultZeroSetter = false;
+            const bool defaultPower = false;
+            
             LoadData();
             StartCoroutine(AimForResultValue());
+
+            _zeroOffset = Random.Range(_minZeroOffsetFactor, _maxZeroOffsetFactor);
             
             _scaleFactorHandle.Init();
             _scaleFactorHandle.SetDefaultValue(_defaultScaleFactor, 0, _maxScaleFactor);
             
-            _toggle.Init();
-            _toggle.SetDefaultToggledState(false);
+            _zeroOffsetHandle.Init();
+            _zeroOffsetHandle.SetDefaultValue(_zeroOffset, _minZeroOffsetFactor, _maxZeroOffsetFactor);
+            
+            _switcher.Init();
+            _switcher.SetDefaultToggledState(defaultZeroSetter);
+            _switcher.Toggled.AddListener(ToggleZeroSetter);
+            ToggleZeroSetter(defaultZeroSetter);
+            
+            _powerToggle.Init();
+            _powerToggle.SetDefaultToggledState(defaultPower);
+            _powerToggle.Toggled.AddListener(ToggleEnabling);
+            ToggleEnabling(defaultPower);
             
             _phaseShiftPlate = new EmptyPhaseShiftPlate(0, 0);
-            // _phaseShiftPlate = new MetalPhaseShiftPlate(40, 6.5f);
         }
 
         private void LoadData()
         {
             _maxScaleFactor = InteractionSettings.Data.MaxReceiverScaleFactor;
+            _minZeroOffsetFactor = InteractionSettings.Data.MinZeroOffsetFactor;
+            _maxZeroOffsetFactor = InteractionSettings.Data.MaxZeroOffsetFactor;
             _speedToTarget = InteractionSettings.Data.ReceiverArrowSpeedToTarget;
         }
 
-        public void ToggleEnabling(bool value) => _isEnable = value;
+        private void ToggleEnabling(bool value)
+        {
+            _isEnable = value;
+            
+            if (_isEnable) 
+                _powerMeshRenderer.material.EnableKeyword("_EMISSION");
+            else _powerMeshRenderer.material.DisableKeyword("_EMISSION");
+        }
+
+        private void ToggleZeroSetter(bool value)
+        {
+            _isZeroOffset = value;
+        }
 
         public void SetPhaseShiftPlate(PlateType type, float plateLength = 0, float plateThickness = 0, float plateResistance = 0)
         {
@@ -89,10 +127,11 @@ namespace WaveProject.Station
 
         private void Update()
         {
-            _turnOn = _isEnable ? 1 : 0;
             _speedFactor = _isEnable ? 1 : 2;
+            _speedFactor = _isZeroOffset ? 2 : 1;
             
             _defaultScaleFactor = _scaleFactorHandle.GetValue();
+            _zeroOffset = _zeroOffsetHandle.GetValue();
 
             var distanceFactor = _receivingAntenna.GetAntennasDistanceFactor();
             var powerFactor = _receivingAntenna.PowerFactor;
@@ -107,19 +146,33 @@ namespace WaveProject.Station
             
             var value = _defaultScaleFactor * distanceFactor * powerFactor * receiverSignalLevel;
 
-            var clampedValue = Math.Clamp(value, 0, 100);
-            _result = (float)clampedValue;
+            _result = (float)value;
         }
         
         private IEnumerator AimForResultValue()
         {
-            double currentValue = 0;
+            float currentValue = 0;
+            var minValue = 0f;
+            var maxValue = 100f;
+
             while (true)
             {
-                currentValue = Mathf.Lerp((float)currentValue, CurrentTarget, _speedFactor * _speedToTarget * Time.deltaTime);
+                float currentTarget;
+                if (_isZeroOffset)
+                {
+                    currentTarget = _zeroOffset;
+                    minValue = _minZeroOffsetFactor;
+                }
+                else
+                {
+                    currentTarget = CurrentTarget;
+                }
+                
+                currentValue = Mathf.Lerp(currentValue, currentTarget, _speedFactor * _speedToTarget * Time.deltaTime);
 
                 _text.text = $"{Math.Round(currentValue)}";
-                _arrow.rotation = Utils.GetRotationInRange((float)currentValue, 0, 100, -_arrowAngleRange, _arrowAngleRange, Vector3.right);
+
+                _arrow.rotation = Utils.GetRotationInRange(currentValue, minValue, maxValue, -_arrowAngleRange + minValue, _arrowAngleRange, Vector3.right);
 
                 yield return null;
             }

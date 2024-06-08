@@ -24,6 +24,8 @@ namespace WaveProject.Configs
 
         [field:Header("Receiver")]
         [field: SerializeField] public float MaxReceiverScaleFactor { get; private set; } = 5;
+        [field: SerializeField] public float MinZeroOffsetFactor { get; private set; } = -5;
+        [field: SerializeField] public float MaxZeroOffsetFactor { get; private set; } = 15;
         [field: SerializeField] public float ReceiverArrowSpeedToTarget { get; private set; } = 2;
         
         
@@ -45,5 +47,6 @@ namespace WaveProject.Configs
 
         public static InteractionSettings Data =>
             _instance ??= Resources.Load<InteractionSettings>("Configs/InteractionSettings");
+
     }
 }
