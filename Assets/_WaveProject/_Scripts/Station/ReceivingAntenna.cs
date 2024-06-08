@@ -10,6 +10,10 @@ namespace WaveProject.Station
     {
         [SerializeField] private float _baseDistance = 4;
         [SerializeField] private MoveBetweenPointsInteractable _secondAntenna;
+        
+        [SerializeField] private Transform _thisAntennaDistancePoint;
+        [SerializeField] private Transform _secondAntennaDistancePoint;
+        
         [SerializeField] private InfiniteRotateInteractable _rotatePart;
         [SerializeField] private TMP_Text _rotationText;
         
@@ -18,7 +22,7 @@ namespace WaveProject.Station
 
         private void OnValidate()
         {
-            _baseDistance = Vector3.Distance(_secondAntenna.Transform.position, transform.position);
+            _baseDistance = GetPointsDistance();
         }
 
         public void Init()
@@ -37,7 +41,12 @@ namespace WaveProject.Station
 
         public float GetAntennasDistanceFactor()
         {
-          return 1 * _baseDistance / Mathf.Pow(Vector3.Distance(_secondAntenna.Transform.position, transform.position), 2);
+          return 1 * _baseDistance / Mathf.Pow(GetPointsDistance(), 2);
+        }
+
+        private float GetPointsDistance()
+        {
+            return Vector3.Distance(_thisAntennaDistancePoint.position, _secondAntennaDistancePoint.position);
         }
 
         public float GetRotation() => _rotatePart.GetRotation();

@@ -29,15 +29,8 @@ namespace WaveProject.Station.PlateLogic
             MovementInteractable.SetDefaultValue();
         }
 
-        public void SetStart()
-        {
-            transform.position = _defaultPosition;
-            MovementInteractable.ResetToDefault();
-        }
-
         public void Hide()
         {
-            SetStart();
             gameObject.SetActive(false);
         }
 

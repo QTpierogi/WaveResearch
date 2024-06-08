@@ -60,6 +60,7 @@ namespace WaveProject.Station.PlateLogic
                 _resistanceMaxValue);
 
             _removePlateUIView.AddListener(RemovePlate);
+            RemovePlate();
             
             _metalPlate.transform.parent = _moveAntenn;
             _dielectricPlate.transform.parent = _moveAntenn;
@@ -100,6 +101,8 @@ namespace WaveProject.Station.PlateLogic
 
         private void SelectMetalPlate()
         {
+            RemovePlate();
+            
             _inputController.BlockUserInput(true);
             
             _virtualCamera.gameObject.SetActive(true);
@@ -115,6 +118,8 @@ namespace WaveProject.Station.PlateLogic
 
         private void SelectDielectricPlate()
         {
+            RemovePlate();
+            
             _inputController.BlockUserInput(true);
             
             _virtualCamera.gameObject.SetActive(true);
@@ -131,14 +136,10 @@ namespace WaveProject.Station.PlateLogic
         private void Show()
         {
             _receiver.SetPhaseShiftPlate(_plateType, _length, _thickness, _resistance);
-
-            if (_currentPlate != null) 
-                _currentPlate.Hide();
             
             _currentPlate = _plateType == PlateType.Metal ? _metalPlate : _dielectricPlate;
             _currentPlate.gameObject.SetActive(true);
 
-            _currentPlate.SetStart();
             _currentPlate.MoveToAntenna(_moveDuration, OnPlateMoved);
             
             _plateUiView.gameObject.SetActive(false);

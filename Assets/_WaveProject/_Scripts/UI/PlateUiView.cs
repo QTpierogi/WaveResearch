@@ -14,9 +14,9 @@ namespace WaveProject.UI
         [SerializeField] private Slider _resistanceSlider;
 
         [Space] 
-        [SerializeField] private TMP_Text _lengthText;
-        [SerializeField] private TMP_Text _thicknessText;
-        [SerializeField] private TMP_Text _resistanceText;
+        [SerializeField] private TMP_InputField _lengthText;
+        [SerializeField] private TMP_InputField _thicknessText;
+        [SerializeField] private TMP_InputField _resistanceText;
         
         [Space] 
         [SerializeField] private GameObject _resistance;
@@ -56,6 +56,10 @@ namespace WaveProject.UI
             _lengthSlider.onValueChanged.AddListener(ChangeLength);
             _thicknessSlider.onValueChanged.AddListener(ChangeThickness);
             _resistanceSlider.onValueChanged.AddListener(ChangeResistance);
+            
+            _lengthText.onValueChanged.AddListener(value => ChangeLength(float.Parse(value)));
+            _thicknessText.onValueChanged.AddListener(value => ChangeThickness(float.Parse(value)));
+            _resistanceText.onValueChanged.AddListener(value => ChangeResistance(float.Parse(value)));
 
             _backButton.onClick.AddListener(() => back());
             _createButton.onClick.AddListener(() => create());
@@ -65,23 +69,32 @@ namespace WaveProject.UI
 
         private void ChangeLength(float value)
         {
+            value = Mathf.Clamp(value, _lengthSlider.minValue, _lengthSlider.maxValue);
+            
+            _lengthSlider.value = value;
             _lengthConfigured = true;
             LengthChanged?.Invoke(ChangeParameter(_lengthText, value));
         }
 
         private void ChangeThickness(float time)
         {
+            time = Mathf.Clamp(time, _thicknessSlider.minValue, _thicknessSlider.maxValue);
+            
+            _thicknessSlider.value = time;
             _thicknessConfigured = true;
             ThicknessChanged?.Invoke(ChangeParameter(_thicknessText, time));
         }
 
         private void ChangeResistance(float time)
         {
+            time = Mathf.Clamp(time, _resistanceSlider.minValue, _resistanceSlider.maxValue);
+            
+            _resistanceSlider.value = time;
             _resistanceConfigured = true;
             ResistanceChanged?.Invoke(ChangeParameter(_resistanceText, time));
         }
 
-        private static float ChangeParameter(TMP_Text text, float value)
+        private static float ChangeParameter(TMP_InputField text, float value)
         {
             text.text = value.ToString("F");
             return value;

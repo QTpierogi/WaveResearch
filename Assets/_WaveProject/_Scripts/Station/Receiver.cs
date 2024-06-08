@@ -129,6 +129,8 @@ namespace WaveProject.Station
         {
             _speedFactor = _isEnable ? 1 : 2;
             _speedFactor = _isZeroOffset ? 2 : 1;
+
+            if (_isEnable == false) return;
             
             _defaultScaleFactor = _scaleFactorHandle.GetValue();
             _zeroOffset = _zeroOffsetHandle.GetValue();
