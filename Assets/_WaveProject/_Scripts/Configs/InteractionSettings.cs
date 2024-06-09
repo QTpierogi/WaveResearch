@@ -28,11 +28,6 @@ namespace WaveProject.Configs
         [field: SerializeField] public float MaxZeroOffsetFactor { get; private set; } = 15;
         [field: SerializeField] public float ReceiverArrowSpeedToTarget { get; private set; } = 2;
         
-        
-        [field:Header("Deviation")]
-        [field: Range(0, 1), SerializeField] public float DeviationRange { get; private set; } = 0.05f;
-        
-
         // внутрянняя ширина волновода в метрах
         public const float INTERNAL_WAVEGUIDE_WIDTH = 0.023f; 
 

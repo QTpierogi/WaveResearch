@@ -8,6 +8,11 @@ namespace WaveProject.Interaction
         [SerializeField] protected Transform _leftPoint;
         [SerializeField] protected Transform _rightPoint;
 
+        public void SetDefaultPosition(float time)
+        {
+            SetPosition(time);
+        }
+        
         public void SetDefaultValue()
         {
             var start = _leftPoint.position;

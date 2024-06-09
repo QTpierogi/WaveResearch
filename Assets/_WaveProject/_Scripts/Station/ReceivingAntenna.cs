@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 using WaveProject.Interaction;
-using WaveProject.Utility;
+using Random = UnityEngine.Random;
 
 namespace WaveProject.Station
 {
@@ -28,10 +28,13 @@ namespace WaveProject.Station
         public void Init()
         {
             _secondAntenna.Init();
+            _secondAntenna.SetDefaultPosition(Random.Range(0, 1f));
             _secondAntenna.SetDefaultValue();
             
             _rotatePart.Init();
-            _rotatePart.SetDefaultRotation();
+            
+            var angle = Random.Range(-90, 90);
+            _rotatePart.SetDefaultRotation(angle);
         }
 
         private void Update()

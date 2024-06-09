@@ -3,7 +3,6 @@ using UnityEngine;
 using WaveProject.Configs;
 using WaveProject.Interaction;
 using WaveProject.Utility;
-using Random = UnityEngine.Random;
 
 namespace WaveProject.Station
 {
@@ -22,9 +21,6 @@ namespace WaveProject.Station
 
         [Space] 
         [SerializeField] private ReceivingAntenna _receivingAntenna;
-        
-        private float _deviationRange;
-        private float _randomDeviation;
         
         private float _minFrequency;
         private float _maxFrequency;
@@ -55,8 +51,6 @@ namespace WaveProject.Station
             
             LoadData();
             
-            _randomDeviation = Random.Range(1 - _deviationRange, 1 + _deviationRange);
-
             _frequencyHandle.Init();
             _frequencyHandle.SetDefaultValue(_defaultFrequency, _minFrequency, _maxFrequency);
             
@@ -75,7 +69,6 @@ namespace WaveProject.Station
             _minFrequency = InteractionSettings.MIH_FREQUENCY;
             
             _maxPower = InteractionSettings.Data.MaxPower;
-            _deviationRange = InteractionSettings.Data.DeviationRange;
             _frequencyStep = InteractionSettings.Data.FrequencyStep;
             _powerStep = InteractionSettings.Data.PowerStep;
         }
@@ -101,8 +94,8 @@ namespace WaveProject.Station
         {
             _textFrequency.text = $"{Mathf.Round(_currentFrequency)}";
             
-            _receivingAntenna.SendFrequency(_currentFrequency * _randomDeviation);
-            _receivingAntenna.SendPowerFactor(_currentPower / (_maxPower * 0.5f) * _randomDeviation);
+            _receivingAntenna.SendFrequency(_currentFrequency);
+            _receivingAntenna.SendPowerFactor(_currentPower / (_maxPower * 0.5f));
         }
     }
 }

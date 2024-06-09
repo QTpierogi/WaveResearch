@@ -5,9 +5,12 @@ namespace WaveProject.Interaction
 {
     class InfiniteRotateInteractable : DirectionInteractable
     {
-        public virtual void SetDefaultRotation()
+        public virtual void SetDefaultRotation(float rotationInDegree)
         {
-            Transform.rotation = Quaternion.identity;
+            var exitRotation = rotationInDegree * ExitAxis;
+            Transform.rotation = Quaternion.Euler(exitRotation);
+
+            TotalDeltaDistance = Vector3.Scale(Transform.rotation.eulerAngles, ExitAxis).magnitude;
         }
 
         protected override void UpdateDeltaDistance(Vector2 delta)
