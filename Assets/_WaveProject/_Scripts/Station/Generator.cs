@@ -32,6 +32,8 @@ namespace WaveProject.Station
         private float _currentPower;
         private bool _isEnable;
 
+        public bool IsEnable => _isEnable;
+
         private void OnValidate()
         {
             if (_defaultFrequency > InteractionSettings.MAX_FREQUENCY)
@@ -75,8 +77,8 @@ namespace WaveProject.Station
 
         private void Update()
         {
-            _currentFrequency = _isEnable ? Utils.RoundToIncrement(_frequencyHandle.GetValue(), _frequencyStep) : 0;
-            _currentPower = _isEnable ? Utils.RoundToIncrement(_powerHandle.GetValue(), _powerStep) : 0;
+            _currentFrequency = IsEnable ? Utils.RoundToIncrement(_frequencyHandle.GetValue(), _frequencyStep) : 0;
+            _currentPower = IsEnable ? Utils.RoundToIncrement(_powerHandle.GetValue(), _powerStep) : 0;
             
             SendData();
         }
@@ -85,7 +87,7 @@ namespace WaveProject.Station
         {
             _isEnable = value;
             
-            if (_isEnable) 
+            if (IsEnable) 
                 _powerMeshRenderer.material.EnableKeyword("_EMISSION");
             else _powerMeshRenderer.material.DisableKeyword("_EMISSION");
         }

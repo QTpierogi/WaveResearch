@@ -34,10 +34,10 @@ namespace WaveProject.UI
         public event Action<float> ResistanceChanged;
 
         public void Init(Action create, Action back,
-            int lengthMinValue,
-            int lengthMaxValue,
-            int thicknessMinValue,
-            int thicknessMaxValue,
+            float lengthMinValue,
+            float lengthMaxValue,
+            float thicknessMinValue,
+            float thicknessMaxValue,
             float resistanceMinValue,
             float resistanceMaxValue)
         {

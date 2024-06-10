@@ -43,7 +43,7 @@ namespace WaveProject.Station
         private PhaseShiftPlate _phaseShiftPlate;
 
         private float _result;
-        private float CurrentTarget => Math.Clamp(_result * (_isEnable ? 1 : 0), 0, 100) + _zeroOffset;
+        private float CurrentTarget => Math.Clamp(_isEnable ? _result + _zeroOffset : 0, _minZeroOffsetFactor, 100);
 
         private void OnValidate()
         {
@@ -129,11 +129,12 @@ namespace WaveProject.Station
         {
             _speedFactor = _isEnable ? 1 : 2;
             _speedFactor = _isZeroOffset ? 2 : 1;
+            
+            _zeroOffset =  _isEnable ? _zeroOffsetHandle.GetValue() : 0;
 
-            if (_isEnable == false) return;
+            if (_isEnable == false || _receivingAntenna.GeneratorEnabled == false) return;
             
             _defaultScaleFactor = _scaleFactorHandle.GetValue();
-            _zeroOffset = _zeroOffsetHandle.GetValue();
 
             var distanceFactor = _receivingAntenna.GetAntennasDistanceFactor();
             var powerFactor = _receivingAntenna.PowerFactor;
@@ -154,25 +155,16 @@ namespace WaveProject.Station
         private IEnumerator AimForResultValue()
         {
             float currentValue = 0;
-            var minValue = 0f;
-            var maxValue = 100f;
+            const float maxValue = 100f;
+            var minValue = _minZeroOffsetFactor;
 
             while (true)
             {
-                float currentTarget;
-                if (_isZeroOffset)
-                {
-                    currentTarget = _zeroOffset;
-                    minValue = _minZeroOffsetFactor;
-                }
-                else
-                {
-                    currentTarget = CurrentTarget;
-                }
+                var currentTarget = _isZeroOffset ? _zeroOffset : CurrentTarget;
                 
                 currentValue = Mathf.Lerp(currentValue, currentTarget, _speedFactor * _speedToTarget * Time.deltaTime);
 
-                _text.text = $"{Math.Round(currentValue)}";
+                _text.text = $"{Math.Clamp(Math.Round(currentValue), minValue, maxValue)}";
 
                 _arrow.rotation = Utils.GetRotationInRange(currentValue, minValue, maxValue, -_arrowAngleRange + minValue, _arrowAngleRange, Vector3.right);
 

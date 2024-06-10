@@ -19,6 +19,7 @@ namespace WaveProject.Station
         
         public float PowerFactor { get; private set; }
         public float Frequency { get; private set; }
+        public bool GeneratorEnabled => Frequency != 0;
 
         private void OnValidate()
         {

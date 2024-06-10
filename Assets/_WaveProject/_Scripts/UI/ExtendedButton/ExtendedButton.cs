@@ -9,11 +9,13 @@ namespace WaveProject.UI.ExtendedButton
     {
         private ExtendedButtonData _data;
 
+#if UNITY_EDITOR
         protected override void OnValidate()
         {
             base.OnValidate();
             transition = Transition.None;
         }
+#endif
 
         protected override void Awake()
         {

@@ -20,11 +20,11 @@ namespace WaveProject.Station.PlateLogic
         [SerializeField] private InteractableButton _selectDielectricButton;
 
         [Space] 
-        [SerializeField] private int _lengthMinValue;
-        [SerializeField] private int _lengthMaxValue;
+        [SerializeField] private float _lengthMinValue;
+        [SerializeField] private float _lengthMaxValue;
 
-        [SerializeField] private int _thicknessMinValue;
-        [SerializeField] private int _thicknessMaxValue;
+        [SerializeField] private float _thicknessMinValue;
+        [SerializeField] private float _thicknessMaxValue;
 
         [SerializeField] private float _resistanceMinValue;
         [SerializeField] private float _resistanceMaxValue;

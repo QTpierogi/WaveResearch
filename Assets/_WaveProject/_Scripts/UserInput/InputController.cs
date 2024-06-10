@@ -23,6 +23,7 @@ namespace WaveProject.UserInput
         private const float _RAYCAST_DISTANCE = 1000;
 
         public bool IsUserInputBlocked { get; private set; }
+        public bool IsMovementBlocked { get; private set; }
 
         private void Update()
         {
@@ -73,9 +74,18 @@ namespace WaveProject.UserInput
             ClearOutline();
         }
 
+        public void BlockMovement(bool value)
+        {
+            IsMovementBlocked = value;
+        }
+
         private void CustomUpdate()
         {
             _currentSubscriber.CustomUpdate(Delta);
+            
+            if (IsMovementBlocked)
+                return;
+            
             _infiniteSubscribers.ForEach(s => s.CustomUpdate(Delta));
         }
 
