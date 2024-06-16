@@ -14,6 +14,9 @@ namespace WaveProject.UI
         [SerializeField] private Slider _resistanceSlider;
 
         [Space] 
+        [SerializeField] private TextMeshProUGUI _titleText;
+        
+        [Space] 
         [SerializeField] private TMP_InputField _lengthText;
         [SerializeField] private TMP_InputField _thicknessText;
         [SerializeField] private TMP_InputField _resistanceText;
@@ -105,6 +108,8 @@ namespace WaveProject.UI
             _resistance.gameObject.SetActive(false);
             _createButton.interactable = false;
 
+            _titleText.text = "Размеры металлической пластинки";
+
             StartCoroutine(WaitAllConfigured(true));
         }
 
@@ -112,6 +117,8 @@ namespace WaveProject.UI
         {
             _resistance.gameObject.SetActive(true);
             _createButton.interactable = false;
+            
+            _titleText.text = "Параметры диэлектрической пластинки";
 
             StartCoroutine(WaitAllConfigured(false));
         }

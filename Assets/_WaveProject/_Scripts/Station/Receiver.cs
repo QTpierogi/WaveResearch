@@ -18,6 +18,7 @@ namespace WaveProject.Station
         [SerializeField] private Switcher _switcher;
         [SerializeField] private Toggle _powerToggle;
         [SerializeField] private MeshRenderer _powerMeshRenderer;
+        [SerializeField] private MeshRenderer _powerZeroOffsetMeshRenderer;
 
         [Space] 
         [SerializeField] private TMP_Text _text;
@@ -97,11 +98,19 @@ namespace WaveProject.Station
             if (_isEnable) 
                 _powerMeshRenderer.material.EnableKeyword("_EMISSION");
             else _powerMeshRenderer.material.DisableKeyword("_EMISSION");
+            
+            if (_isEnable && _isZeroOffset) 
+                _powerZeroOffsetMeshRenderer.material.EnableKeyword("_EMISSION");
+            else _powerZeroOffsetMeshRenderer.material.DisableKeyword("_EMISSION");
         }
 
         private void ToggleZeroSetter(bool value)
         {
             _isZeroOffset = value;
+            
+            if (_isEnable && _isZeroOffset) 
+                _powerZeroOffsetMeshRenderer.material.EnableKeyword("_EMISSION");
+            else _powerZeroOffsetMeshRenderer.material.DisableKeyword("_EMISSION");
         }
 
         public void SetPhaseShiftPlate(PlateType type, float plateLength = 0, float plateThickness = 0, float plateResistance = 0)
