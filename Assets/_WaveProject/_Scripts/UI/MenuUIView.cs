@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -24,6 +25,7 @@ namespace WaveProject.UI
         [SerializeField] private Ease _animationEase;
 
         [SerializeField] private TMP_Dropdown _qualityDropdown;
+        [SerializeField] private TMP_Dropdown _resolutionDropdown;
         [SerializeField] private TMP_Dropdown _fullscreenModeDropdown;
 
         [SerializeField] private Button _manualButton;
@@ -45,6 +47,7 @@ namespace WaveProject.UI
             _settingsHideMenu.onClick.AddListener(ToggleShowMenu);
             
             _qualityDropdown.onValueChanged.AddListener(SetQualityLevel);
+            _resolutionDropdown.onValueChanged.AddListener(SetResolution);
             _fullscreenModeDropdown.onValueChanged.AddListener(SetFullscreenMode);
 
             _manualButton.onClick.AddListener(OpenManual);
@@ -57,6 +60,7 @@ namespace WaveProject.UI
             _settingsHideMenu.onClick.RemoveListener(ToggleShowMenu);
             
             _qualityDropdown.onValueChanged.RemoveListener(SetQualityLevel);
+            _resolutionDropdown.onValueChanged.RemoveListener(SetResolution);
             _fullscreenModeDropdown.onValueChanged.RemoveListener(SetFullscreenMode);
 
             _manualButton.onClick.RemoveListener(OpenManual);
@@ -76,6 +80,7 @@ namespace WaveProject.UI
             _settingsHideMenu.gameObject.SetActive(_opened);
 
             LoadQuality();
+            LoadResolution();
             LoadFullscreenMode();
 
             HideExitButtonIfWeb();
@@ -97,6 +102,19 @@ namespace WaveProject.UI
             }
             
             _qualityDropdown.value = QualitySettings.GetQualityLevel();
+        }
+
+        private void LoadResolution()
+        {
+           _resolutionDropdown.options = new List<TMP_Dropdown.OptionData>();
+           foreach (var resolution in Screen.resolutions)
+           {
+               _resolutionDropdown.options.Add(new TMP_Dropdown.OptionData(resolution.ToString()));
+           }
+
+           _resolutionDropdown.value = Screen.resolutions
+               .ToList()
+               .FindIndex(resolution => resolution.width == Screen.width && resolution.height == Screen.height);
         }
 
         private void LoadFullscreenMode()
@@ -150,6 +168,12 @@ namespace WaveProject.UI
         private void SetQualityLevel(int value)
         {
             QualitySettings.SetQualityLevel(value, true);
+        }
+
+        private void SetResolution(int value)
+        {
+            var resolution = Screen.resolutions[value];
+            Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreenMode);
         }
 
         private void SetFullscreenMode(int value)
