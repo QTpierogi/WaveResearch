@@ -1,10 +1,8 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +17,7 @@ namespace WaveProject.UI
         [SerializeField] private Button _settingsHideMenu;
         [SerializeField] private RectTransform _menu;
         [SerializeField] private Transform _buttonsHolder;
+        [SerializeField] private VerticalLayoutGroup _verticalLayoutGroup;
         
         [SerializeField] private float _xOpenedPosition = -60;
         [SerializeField] private float _animationDuration = 1.5f;
@@ -67,7 +66,7 @@ namespace WaveProject.UI
             _exitButton.onClick.RemoveListener(Application.Quit);
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
             ServiceManager.TryGetService(out InputController inputController);
             _inputController = inputController;
@@ -83,13 +82,26 @@ namespace WaveProject.UI
             LoadResolution();
             LoadFullscreenMode();
 
-            HideExitButtonIfWeb();
+            yield return HideButtonsIfWeb();
         }
 
-        private void HideExitButtonIfWeb()
+        private IEnumerator HideButtonsIfWeb()
         {
-#if UNITY_WEBGL && UNITY_EDITOR
+#if UNITY_WEBGL
             _exitButton.gameObject.SetActive(false);
+            _resolutionDropdown.gameObject.SetActive(false);
+            _verticalLayoutGroup.enabled = true;
+
+            yield return null;
+            
+            _verticalLayoutGroup.enabled = false;
+
+            foreach (RectTransform buttons in _buttonsHolder)
+            {
+                var anchoredPosition = buttons.anchoredPosition;
+                anchoredPosition.x = _xHidedButtonsPosition;
+                buttons.anchoredPosition = anchoredPosition;
+            }
 #endif
         }
 
@@ -131,9 +143,6 @@ namespace WaveProject.UI
             _opened = !_opened;
             
             _settingsHideMenu.gameObject.SetActive(_opened);
-            
-            // _inputController.BlockUserInput(_opened);
-            // _inputController.BlockMovement(_opened);
             
             _animationSequence?.Kill();
             _animationSequence = DOTween.Sequence();
