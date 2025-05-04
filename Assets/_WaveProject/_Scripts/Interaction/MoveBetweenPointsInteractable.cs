@@ -5,8 +5,8 @@ namespace WaveProject.Interaction
 {
     public class MoveBetweenPointsInteractable : DirectionInteractable
     {
-        [SerializeField] protected Transform _leftPoint;
-        [SerializeField] protected Transform _rightPoint;
+        [SerializeField] public Transform _leftPoint;
+        [SerializeField] public Transform _rightPoint;
 
         public void SetDefaultPosition(float time)
         {

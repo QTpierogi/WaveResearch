@@ -88,20 +88,22 @@ namespace WaveProject.UI
         private IEnumerator HideButtonsIfWeb()
         {
 #if UNITY_WEBGL
-            _exitButton.gameObject.SetActive(false);
-            _resolutionDropdown.gameObject.SetActive(false);
-            _verticalLayoutGroup.enabled = true;
+                    _exitButton.gameObject.SetActive(false);
+                    _resolutionDropdown.gameObject.SetActive(false);
+                    _verticalLayoutGroup.enabled = true;
 
-            yield return null;
-            
-            _verticalLayoutGroup.enabled = false;
+                    yield return null;
 
-            foreach (RectTransform buttons in _buttonsHolder)
-            {
-                var anchoredPosition = buttons.anchoredPosition;
-                anchoredPosition.x = _xHidedButtonsPosition;
-                buttons.anchoredPosition = anchoredPosition;
-            }
+                    _verticalLayoutGroup.enabled = false;
+
+                    foreach (RectTransform buttons in _buttonsHolder)
+                    {
+                        var anchoredPosition = buttons.anchoredPosition;
+                        anchoredPosition.x = _xHidedButtonsPosition;
+                        buttons.anchoredPosition = anchoredPosition;
+                    }
+#else
+            yield return null; 
 #endif
         }
 
