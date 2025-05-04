@@ -164,12 +164,12 @@ namespace WaveProject
             {
                 if(_carriageStation.loopInsert)
                 {
-                    fZ = Mathf.Abs(Mathf.Cos(zDistance * Mathf.PI / _carriageStation.ConstStandWidth));
+                    fZ = Mathf.Abs(Mathf.Cos(zDistance * Mathf.PI / closedWaveLength));
                     fX = 1f;
                 }
                 else
                 {
-                    fZ = Mathf.Abs(Mathf.Sin(zDistance * Mathf.PI / _carriageStation.ConstStandWidth));
+                    fZ = Mathf.Abs(Mathf.Sin(zDistance * Mathf.PI / closedWaveLength));
                     fX = 1f;
                 }
             }
@@ -189,7 +189,7 @@ namespace WaveProject
 
             var value = _defaultScaleFactor * PowerFactor * fX * fZ;
 
-            _result = (float)value * 100;
+            _result = value * value * 100;
         }
 
         private IEnumerator AimForResultValue()

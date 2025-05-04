@@ -35,7 +35,6 @@ namespace WaveProject
             _receiver.Init();
             _carriageStation.Init();
             _insertableWaveguidesController.Init();
-            //_plateGenerator.Init();
         }
     }
 }
